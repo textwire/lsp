@@ -1,14 +1,14 @@
 .PHONY: test
 test:
-	echo "🚀 Running tests..."
+	@echo "🚀 Running tests..."
 	go test ./...
-	echo "✅ Tests passed!"
+	@echo "✅ Tests passed!"
 
 .PHONE: push
 push:
-	echo "🚀 Pushing to GitHub..."
+	@echo "🚀 Pushing to GitHub..."
 	make test
 	git push
-	echo "✅ Pushed to GitHub!"
+	@echo "✅ Pushed to GitHub!"
 
 .DEFAULT_GOAL := test
