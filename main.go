@@ -4,16 +4,18 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+
+	"github.com/textwire/lsp/rpc"
 )
 
 func main() {
 	fmt.Println("hi")
 
 	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Split(rpc.Split)
 
 	for scanner.Scan() {
-		msg := scanner.Text()
-		handleMessage()
+		handleMessage(scanner.Text())
 	}
 }
 
