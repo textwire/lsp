@@ -16,7 +16,6 @@ func main() {
 	scanner.Split(rpc.Split)
 
 	for scanner.Scan() {
-		logger.Println("Inside of a loop")
 		handleMessage(logger, scanner.Text())
 	}
 }
