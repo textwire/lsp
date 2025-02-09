@@ -10,6 +10,7 @@ import (
 )
 
 const headerLabel = "Content-Length: "
+
 var contentSeparator = []byte{'\r', '\n', '\r', '\n'}
 
 type BaseMessage struct {
@@ -62,15 +63,11 @@ func Split(data []byte, _ bool) (advance int, token []byte, err error) {
 		return 0, nil, err
 	}
 
-	if !isContentFull(content, contentLen) {
+	if len(content) < contentLen {
 		return 0, nil, nil
 	}
 
 	totalLen := len(header) + len(contentSeparator) + contentLen
 
 	return totalLen, data[:totalLen], nil
-}
-
-func isContentFull(content []byte, contentLen int) bool {
-	return len(content) < contentLen
 }
