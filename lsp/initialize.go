@@ -27,8 +27,9 @@ type InitializeResult struct {
 
 // ServerCapabilities are features that a client and a server
 // can negotiate to decide which ones to use
-type ServerCapabilities struct{
-	TextDocumentSync int `json:"textDocumentSync"`
+type ServerCapabilities struct {
+	TextDocumentSync int  `json:"textDocumentSync"`
+	HoverProvider    bool `json:"hoverProvider"`
 }
 
 type ServerInfo struct {
@@ -40,14 +41,15 @@ func NewInitializeResponse(id int) InitializeResponse {
 	return InitializeResponse{
 		Response: Response{
 			RPC: "2.0",
-			ID: &id,
+			ID:  &id,
 		},
 		Result: InitializeResult{
 			Capabilities: ServerCapabilities{
 				TextDocumentSync: 1,
+				HoverProvider:    true,
 			},
 			ServerInfo: ServerInfo{
-				Name: "textwirelsp",
+				Name:    "textwirelsp",
 				Version: "1.0.0-beta1",
 			},
 		},

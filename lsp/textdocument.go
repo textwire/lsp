@@ -23,3 +23,13 @@ type VersionTextDocumentIdentifier struct {
 	TextDocumentIdentifier
 	Version int `json:"version"`
 }
+
+type TextDocumentPositionParams struct {
+	TextDocument TextDocumentIdentifier `json:"textDocument"`
+	Position     Position
+}
+
+type Position struct {
+	Line      int `json:"line"`
+	Character int `json:"character"`
+}
