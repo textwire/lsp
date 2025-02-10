@@ -2,9 +2,11 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"log"
 	"os"
 
+	"github.com/textwire/lsp/lsp"
 	"github.com/textwire/lsp/rpc"
 )
 
@@ -27,8 +29,36 @@ func main() {
 	}
 }
 
-func handleMessage(logger *log.Logger, method string, _ []byte) {
-	logger.Printf("Got a message with the method: %s", method)
+func handleMessage(logger *log.Logger, method string, content []byte) {
+	logger.Printf("Received a method: `%s`", method)
+
+	switch method {
+	case "initialize":
+		var req lsp.InitializeRequest
+		if err := json.Unmarshal(content, &req); err != nil {
+			logger.Printf("Couldn't parse this: %s", err)
+			break
+		}
+
+		replyOnInitialize(req)
+		logger.Println("Sent the initialize reply")
+	case "textDocument/didOpen":
+		var req lsp.DidOpenTextDocumentNotification
+		if err := json.Unmarshal(content, &req); err != nil {
+			logger.Printf("Couldn't parse this: %s", err)
+		}
+
+		logger.Printf("Opened: %s %s", req.Params.TextDocument.URI, req.Params.TextDocument.Text)
+		logger.Println("Sent the didOpen reply")
+	}
+}
+
+func replyOnInitialize(req lsp.InitializeRequest) {
+	msg := lsp.NewInitializeResponse(req.ID)
+	reply := rpc.EncodeMessage(msg)
+
+	writer := os.Stdout
+	writer.Write([]byte(reply))
 }
 
 func getLogger(filename string) *log.Logger {

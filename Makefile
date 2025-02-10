@@ -1,4 +1,4 @@
-.PHONY: test
+w.PHONY: test
 test:
 	@echo "🚀 Running tests..."
 	go test ./...

@@ -1,0 +1,5 @@
+<div>
+	@if(true)
+		{{ "upper string".upper() }}
+	@end
+</div>
