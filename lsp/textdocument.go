@@ -14,3 +14,12 @@ type TextDocumentItem struct {
 	// The content of the opened text document
 	Text string `json:"text"`
 }
+
+type TextDocumentIdentifier struct {
+	URI string `json:"uri"`
+}
+
+type VersionTextDocumentIdentifier struct {
+	TextDocumentIdentifier
+	Version int `json:"version"`
+}
