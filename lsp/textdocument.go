@@ -30,6 +30,6 @@ type TextDocumentPositionParams struct {
 }
 
 type Position struct {
-	Line      int `json:"line"`
-	Character int `json:"character"`
+	Line      uint `json:"line"`
+	Character uint `json:"character"`
 }
