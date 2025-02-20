@@ -3,6 +3,7 @@ package analisis
 import (
 	"github.com/textwire/lsp/lsp"
 	"github.com/textwire/textwire/v2/lexer"
+	"github.com/textwire/textwire/v2/metadata"
 	"github.com/textwire/textwire/v2/token"
 )
 

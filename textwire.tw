@@ -1,5 +1,7 @@
 <div>
 	@if(true)
 		{{ "upper string".upper() }}
+	@elseif(false)
+		{{ "lower string".lower() }}
 	@end
 </div>
