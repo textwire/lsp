@@ -47,7 +47,7 @@ func (s *State) Hover(id int, uri string, pos lsp.Position) (lsp.HoverResponse, 
 		return s.response(id, ""), nil
 	}
 
-	return s.response(id, matchingTok.Literal), nil
+	return s.response(id, metadata.GetTokenDoc(matchingTok.Type)), nil
 }
 
 func (s *State) response(id int, contents string) lsp.HoverResponse {
