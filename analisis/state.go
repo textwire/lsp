@@ -43,14 +43,6 @@ func (s *State) Hover(id int, uri string, pos lsp.Position) (lsp.HoverResponse, 
 		}
 	}
 
-	// todo: we don't need to parse the Document
-	// we just need to find a matching token and
-	// get the hover meta infromation from the token.
-	// Hover meta informatin should be in a separate package
-	// and should not be connected to the parser or lexer.
-	// Because we don't want to add this meta information into
-	// binary when users of the language compile their code.
-
 	if matchingTok == nil {
 		return s.response(id, ""), nil
 	}
