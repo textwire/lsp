@@ -3,7 +3,7 @@ package analisis
 import (
 	"github.com/textwire/lsp/lsp"
 	"github.com/textwire/textwire/v2/lexer"
-	"github.com/textwire/textwire/v2/metadata"
+	twLsp "github.com/textwire/textwire/v2/lsp"
 	"github.com/textwire/textwire/v2/token"
 )
 
@@ -48,7 +48,12 @@ func (s *State) Hover(id int, uri string, pos lsp.Position) (lsp.HoverResponse, 
 		return s.response(id, ""), nil
 	}
 
-	return s.response(id, metadata.GetTokenDoc(matchingTok.Type)), nil
+	res, err := twLsp.GetTokenMeta(matchingTok.Type, "en")
+	if err != nil {
+		return s.response(id, ""), err
+	}
+
+	return s.response(id, res), nil
 }
 
 func (s *State) response(id int, contents string) lsp.HoverResponse {

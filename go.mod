@@ -2,4 +2,4 @@ module github.com/textwire/lsp
 
 go 1.23.3
 
-require github.com/textwire/textwire/v2 v2.5.2
+require github.com/textwire/textwire/v2 v2.5.3

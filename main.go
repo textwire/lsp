@@ -35,8 +35,6 @@ func main() {
 }
 
 func handleMessage(logger *log.Logger, writer io.Writer, state analisis.State, method string, content []byte) {
-	logger.Printf("Received a method: `%s`", method)
-
 	switch method {
 	case "initialize":
 		var req lsp.InitializeRequest
@@ -77,7 +75,6 @@ func handleMessage(logger *log.Logger, writer io.Writer, state analisis.State, m
 		}
 
 		resp, err := state.Hover(req.ID, req.Params.TextDocument.URI, req.Params.Position)
-
 		if err != nil {
 			logger.Printf("textDocument/hover error: %s", err)
 			return
