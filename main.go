@@ -14,7 +14,13 @@ import (
 
 func main() {
 	logger := getLogger("/Users/serhiichornenkyi/www/open/textwire/lsp/log.txt")
-	logger.Println("I've started!")
+	logger.Println("Textwire LSP server is running...")
+
+	defer func() {
+		if r := recover(); r != nil {
+			logger.Println("Recovered from panic: ", r)
+		}
+	}()
 
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(rpc.Split)
@@ -80,6 +86,7 @@ func handleMessage(logger *log.Logger, writer io.Writer, state analisis.State, m
 			return
 		}
 
+		logger.Printf("Hover, giving response")
 		writeResponse(writer, resp)
 	}
 }
