@@ -4,21 +4,20 @@ import (
 	"bufio"
 	"encoding/json"
 	"io"
-	"log"
 	"os"
 
 	"github.com/textwire/lsp/analisis"
+	"github.com/textwire/lsp/internal/logger"
 	"github.com/textwire/lsp/lsp"
 	"github.com/textwire/lsp/rpc"
 )
 
 func main() {
-	logger := getLogger("/Users/serhiichornenkyi/www/open/textwire/lsp/log.txt")
-	logger.Println("Textwire LSP server is running...")
+	logger.Info.Println("Textwire LSP server is running...")
 
 	defer func() {
 		if r := recover(); r != nil {
-			logger.Println("Recovered from panic: ", r)
+			logger.Info.Println("Recovered from panic: ", r)
 		}
 	}()
 
@@ -32,20 +31,20 @@ func main() {
 		msg := scanner.Bytes()
 		method, content, err := rpc.DecodeMessage(msg)
 		if err != nil {
-			logger.Printf("Got an error: %s", err)
+			logger.Info.Printf("Got an error: %s", err)
 			continue
 		}
 
-		handleMessage(logger, writer, state, method, content)
+		handleMessage(writer, state, method, content)
 	}
 }
 
-func handleMessage(logger *log.Logger, writer io.Writer, state analisis.State, method string, content []byte) {
+func handleMessage(writer io.Writer, state analisis.State, method string, content []byte) {
 	switch method {
 	case "initialize":
 		var req lsp.InitializeRequest
 		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Printf("initialize error: %s", err)
+			logger.Info.Printf("initialize error: %s", err)
 			return
 		}
 
@@ -54,21 +53,21 @@ func handleMessage(logger *log.Logger, writer io.Writer, state analisis.State, m
 	case "textDocument/didOpen":
 		var req lsp.DidOpenTextDocumentNotification
 		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Printf("textDocument/didOpen error: %s", err)
+			logger.Info.Printf("textDocument/didOpen error: %s", err)
 			return
 		}
 
-		logger.Printf("Opened: %s", req.Params.TextDocument.URI)
+		logger.Info.Printf("Opened: %s", req.Params.TextDocument.URI)
 
 		state.OpenDocument(req.Params.TextDocument.URI, req.Params.TextDocument.Text)
 	case "textDocument/didChange":
 		var req lsp.DidChangeTextDocumentNotification
 		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Printf("textDocument/didChange error: %s", err)
+			logger.Info.Printf("textDocument/didChange error: %s", err)
 			return
 		}
 
-		logger.Printf("Changed: %s", req.Params.TextDocument.URI)
+		logger.Info.Printf("Changed: %s", req.Params.TextDocument.URI)
 
 		for _, change := range req.Params.ContentChanges {
 			state.UpdateDocument(req.Params.TextDocument.URI, change.Text)
@@ -76,17 +75,17 @@ func handleMessage(logger *log.Logger, writer io.Writer, state analisis.State, m
 	case "textDocument/hover":
 		var req lsp.HoverRequest
 		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Printf("textDocument/hover error: %s", err)
+			logger.Info.Printf("textDocument/hover error: %s", err)
 			return
 		}
 
 		resp, err := state.Hover(req.ID, req.Params.TextDocument.URI, req.Params.Position)
 		if err != nil {
-			logger.Printf("textDocument/hover error: %s", err)
+			logger.Info.Printf("textDocument/hover error: %s", err)
 			return
 		}
 
-		logger.Printf("Hover, giving response")
+		logger.Info.Printf("Hover, giving response")
 		writeResponse(writer, resp)
 	}
 }
@@ -94,15 +93,4 @@ func handleMessage(logger *log.Logger, writer io.Writer, state analisis.State, m
 func writeResponse(writer io.Writer, msg any) {
 	reply := rpc.EncodeMessage(msg)
 	writer.Write([]byte(reply))
-}
-
-func getLogger(filename string) *log.Logger {
-	const fileMode = 0666
-
-	logfile, err := os.OpenFile(filename, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, fileMode)
-	if err != nil {
-		log.Panicf("The filepath %s is missing a file", filename)
-	}
-
-	return log.New(logfile, "[textwire lsp]", log.Ldate|log.Ltime|log.Lshortfile)
 }
