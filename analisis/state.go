@@ -25,7 +25,7 @@ func (s *State) UpdateDocument(uri, text string) {
 }
 
 func (s *State) Hover(id int, uri string, pos lsp.Position) (lsp.HoverResponse, error) {
-	// todo: check if document exists
+	// TODO: check if document exists
 	doc := s.Documents[uri]
 
 	l := lexer.New(doc)
@@ -34,13 +34,13 @@ func (s *State) Hover(id int, uri string, pos lsp.Position) (lsp.HoverResponse, 
 
 	for {
 		tok := l.NextToken()
-
 		if tok.Type == token.EOF {
 			break
 		}
 
 		if tok.Pos.Contains(pos.Line, pos.Character) {
 			matchingTok = &tok
+			break
 		}
 	}
 
