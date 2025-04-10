@@ -26,7 +26,7 @@ type VersionTextDocumentIdentifier struct {
 
 type TextDocumentPositionParams struct {
 	TextDocument TextDocumentIdentifier `json:"textDocument"`
-	Position     Position
+	Position     Position               `json:"position"`
 }
 
 type Position struct {

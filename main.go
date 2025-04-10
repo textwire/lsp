@@ -87,6 +87,21 @@ func handleMessage(writer io.Writer, state analisis.State, method string, conten
 
 		logger.Info.Printf("Hover, giving response")
 		writeResponse(writer, resp)
+	case "textDocument/completion":
+		var req lsp.CompletionRequest
+		if err := json.Unmarshal(content, &req); err != nil {
+			logger.Info.Printf("textDocument/completion error: %s", err)
+			return
+		}
+
+		resp, err := state.Completion(req.ID, req.Params.TextDocument.URI, req.Params.Position)
+		if err != nil {
+			logger.Info.Printf("textDocument/completion error: %s", err)
+			return
+		}
+
+		logger.Info.Printf("Completion, giving response")
+		writeResponse(writer, resp)
 	}
 }
 

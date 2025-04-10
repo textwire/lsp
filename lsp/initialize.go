@@ -7,7 +7,7 @@ type InitializeRequest struct {
 
 type InitializeRequestParams struct {
 	ClientInfo *ClientInfo `json:"clientInfo"`
-	// todo: There is a lot to go here
+	// TODO: There is a lot to go here
 }
 
 type ClientInfo struct {
@@ -28,8 +28,11 @@ type InitializeResult struct {
 // ServerCapabilities are features that a client and a server
 // can negotiate to decide which ones to use
 type ServerCapabilities struct {
-	TextDocumentSync int  `json:"textDocumentSync"`
-	HoverProvider    bool `json:"hoverProvider"`
+	TextDocumentSync int `json:"textDocumentSync"`
+
+	// Providers
+	HoverProvider     bool `json:"hoverProvider"`
+	CopletionProvider bool `json:"completionProvider"`
 }
 
 type ServerInfo struct {
@@ -45,8 +48,9 @@ func NewInitializeResponse(id int) InitializeResponse {
 		},
 		Result: InitializeResult{
 			Capabilities: ServerCapabilities{
-				TextDocumentSync: 1,
-				HoverProvider:    true,
+				TextDocumentSync:  1,
+				HoverProvider:     true,
+				CopletionProvider: true,
 			},
 			ServerInfo: ServerInfo{
 				Name:    "textwirelsp",
