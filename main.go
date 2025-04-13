@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/textwire/lsp/analisis"
+	"github.com/textwire/lsp/analysis"
 	"github.com/textwire/lsp/internal/logger"
 	"github.com/textwire/lsp/lsp"
 	"github.com/textwire/lsp/rpc"
@@ -24,7 +24,7 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(rpc.Split)
 
-	state := analisis.NewState()
+	state := analysis.NewState()
 	writer := os.Stdout
 
 	for scanner.Scan() {
@@ -39,7 +39,7 @@ func main() {
 	}
 }
 
-func handleMessage(writer io.Writer, state analisis.State, method string, content []byte) {
+func handleMessage(writer io.Writer, state analysis.State, method string, content []byte) {
 	switch method {
 	case "initialize":
 		var req lsp.InitializeRequest
@@ -100,7 +100,7 @@ func handleMessage(writer io.Writer, state analisis.State, method string, conten
 			return
 		}
 
-		logger.Info.Printf("Completion, giving response")
+		logger.Info.Println("Completion, giving response")
 		writeResponse(writer, resp)
 	}
 }

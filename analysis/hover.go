@@ -1,4 +1,4 @@
-package analisis
+package analysis
 
 import (
 	"github.com/textwire/lsp/lsp"

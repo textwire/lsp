@@ -31,8 +31,8 @@ type ServerCapabilities struct {
 	TextDocumentSync int `json:"textDocumentSync"`
 
 	// Providers
-	HoverProvider     bool `json:"hoverProvider"`
-	CopletionProvider bool `json:"completionProvider"`
+	HoverProvider      bool              `json:"hoverProvider"`
+	CompletionProvider CompletionOptions `json:"completionProvider"`
 }
 
 type ServerInfo struct {
@@ -48,9 +48,11 @@ func NewInitializeResponse(id int) InitializeResponse {
 		},
 		Result: InitializeResult{
 			Capabilities: ServerCapabilities{
-				TextDocumentSync:  1,
-				HoverProvider:     true,
-				CopletionProvider: true,
+				TextDocumentSync: 1,
+				HoverProvider:    true,
+				CompletionProvider: CompletionOptions{
+					TriggerCharacters: []string{".", "@", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"},
+				},
 			},
 			ServerInfo: ServerInfo{
 				Name:    "textwirelsp",

@@ -1,4 +1,4 @@
-package analisis
+package analysis
 
 type State struct {
 	// Documents is a map of file names to contents
