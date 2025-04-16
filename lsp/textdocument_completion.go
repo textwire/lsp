@@ -73,13 +73,16 @@ type CompletionItem struct {
 	// be an unqualified name of the completion item.
 	Label string `json:"label"`
 
-	// Additional details for the label
+	// LabelDetails is additional details for the label.
 	LabelDetails *CompletionItemLabelDetails `json:"labelDetails,omitempty"`
 
-	// A string that should be inserted into a document when selecting
+	// InsertText is a string that should be inserted into a document when selecting
 	// this completion. When omitted the label is used as the insert text
 	// for this item.
 	InsertText string `json:"insertText,omitempty"`
+
+	// Documentation is a human-readable string that represents a doc-comment.
+	Documentation string `json:"documentation,omitempty"`
 }
 
 type CompletionOptions struct {

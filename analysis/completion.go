@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/textwire/lsp/lsp"
+	"github.com/textwire/textwire/v2/lsp/completions"
 )
 
 func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.CompletionResponse, error) {
@@ -19,24 +20,25 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 	cursorPos := int(pos.Character)
 	textBeforeCursor := line[:cursorPos]
 
-	// If we're at the start of a directive (just typed @)
 	if textBeforeCursor == "@" {
-		return s.completionResponse(id, []lsp.CompletionItem{
-			{
-				Label: "use",
+		directives, err := completions.GetDirectives("en")
+		if err != nil {
+			return lsp.CompletionResponse{}, err
+		}
+
+		items := make([]lsp.CompletionItem, 0, len(directives))
+		for _, dir := range directives {
+			items = append(items, lsp.CompletionItem{
+				Label:         dir.Label,
+				InsertText:    dir.Insert,
+				Documentation: dir.Documentation,
 				LabelDetails: &lsp.CompletionItemLabelDetails{
-					Description: "Some desc",
-					Kind:        lsp.CIKSnippet,
+					Kind: lsp.CIKSnippet,
 				},
-			},
-			{
-				Label: "if",
-				LabelDetails: &lsp.CompletionItemLabelDetails{
-					Description: "Some desc",
-					Kind:        lsp.CIKSnippet,
-				},
-			},
-		}), nil
+			})
+		}
+
+		return s.completionResponse(id, items), nil
 	}
 
 	return s.completionResponse(id, []lsp.CompletionItem{}), nil
