@@ -1,69 +1,47 @@
-name: Build and Release Binary
+name: Release Builds on Master Push
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+    branches: [master]
 
 jobs:
-  build:
+  create-release:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        go-version: ['1.24']
-        platform: [macos-latest, windows-latest, ubuntu-latest]
-
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Set up Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ matrix.go-version }}
-
-      - name: Build Binary
-        run: |
-          GOOS=${{ matrix.os }} GOARCH=amd64 go build -o textwire_lsp main.go
-          mkdir -p dist
-          mv textwire_lsp dist/textwire_lsp_${{ matrix.os }}_amd64
-
-      - name: Archive Binary
-        run: tar -czf dist/textwire_lsp_${{ matrix.os }}_amd64.tar.gz -C dist textwire_lsp_${{ matrix.os }}_amd64
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: textwire-lsp-${{ matrix.os }}
-          path: dist/*.tar.gz
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v3
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: latest # Creates/updates 'latest' tag
+          release_name: "Latest Build (${{ github.sha }})"
           draft: false
-          prerelease: false
+          prerelease: true
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  build-binaries:
+    needs: create-release
+    strategy:
+      matrix:
+        platform:
+          - { goos: linux, goarch: amd64 }
+          - { goos: linux, goarch: arm64 }
+          - { goos: darwin, goarch: amd64 }
+          - { goos: darwin, goarch: arm64 }
+          - { goos: windows, goarch: amd64 }
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build Binary
+        uses: wangyoucao577/go-release-action@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/*.tar.gz
-          asset_name: textwire_lsp_${{ matrix.os }}_amd64.tar.gz
-          asset_content_type: application/gzip
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.platform.goos }}
+          goarch: ${{ matrix.platform.goarch }}
+          asset_name: "lsp-${{ matrix.platform.goos }}-${{ matrix.platform.goarch }}"
+          compress_assets: "off" # For raw binaries
+          overwrite: true
+
