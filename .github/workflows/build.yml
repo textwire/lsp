@@ -1,47 +1,39 @@
-name: Release Builds on Master Push
+# .github/workflows/release.yaml
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+    contents: write
+    packages: write
 
 jobs:
-  create-release:
+  releases-matrix:
+    name: Release Go Binary
     runs-on: ubuntu-latest
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
-    steps:
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: latest # Creates/updates 'latest' tag
-          release_name: "Latest Build (${{ github.sha }})"
-          draft: false
-          prerelease: true
-
-  build-binaries:
-    needs: create-release
     strategy:
       matrix:
-        platform:
-          - { goos: linux, goarch: amd64 }
-          - { goos: linux, goarch: arm64 }
-          - { goos: darwin, goarch: amd64 }
-          - { goos: darwin, goarch: arm64 }
-          - { goos: windows, goarch: amd64 }
-    runs-on: ubuntu-latest
+        # build and publish in parallel: linux/386, linux/amd64, linux/arm64, windows/386, windows/amd64, darwin/amd64, darwin/arm64
+        goos: [linux, windows, darwin]
+        goarch: ["386", amd64, arm64]
+        exclude:
+          - goarch: "386"
+            goos: darwin
+          - goarch: arm64
+            goos: windows
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Build Binary
-        uses: wangyoucao577/go-release-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          goos: ${{ matrix.platform.goos }}
-          goarch: ${{ matrix.platform.goarch }}
-          asset_name: "lsp-${{ matrix.platform.goos }}-${{ matrix.platform.goarch }}"
-          compress_assets: "off" # For raw binaries
-          overwrite: true
-
+    - uses: actions/checkout@v4
+    - uses: wangyoucao577/go-release-action@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: ${{ matrix.goarch }}
+        goversion: "https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz"
+        project_path: "./cmd/test-binary"
+        binary_name: "test-binary"
+        extra_files: LICENSE README.md
