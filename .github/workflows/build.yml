@@ -3,10 +3,10 @@ name: Build and Release Binary
 on:
   push:
     branches:
-      - main # Trigger on pushes to the main branch
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
