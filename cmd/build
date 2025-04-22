@@ -1,0 +1,11 @@
+# Linux (amd64)
+GOOS=linux GOARCH=amd64 go build -o cmd/bin/textwire_lsp_linux_amd64 main.go
+
+# macOS (Intel)
+GOOS=darwin GOARCH=amd64 go build -o cmd/bin/textwire_lsp_darwin_amd64 main.go
+
+# macOS (Apple Silicon)
+GOOS=darwin GOARCH=arm64 go build -o cmd/bin/textwire_lsp_darwin_arm64 main.go
+
+# Windows (amd64)
+GOOS=windows GOARCH=amd64 go build -o cmd/bin/textwire_lsp_windows_amd64.exe main.go
