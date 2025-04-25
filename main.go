@@ -13,11 +13,9 @@ import (
 )
 
 func main() {
-	logger.Info.Println("Textwire LSP server is running...")
-
 	defer func() {
 		if r := recover(); r != nil {
-			logger.Info.Println("Recovered from panic: ", r)
+			logger.Error.Println("Recovered from panic: ", r)
 		}
 	}()
 
@@ -31,7 +29,7 @@ func main() {
 		msg := scanner.Bytes()
 		method, content, err := rpc.DecodeMessage(msg)
 		if err != nil {
-			logger.Info.Printf("Got an error: %s", err)
+			logger.Error.Printf("Got an error: %s", err)
 			continue
 		}
 
@@ -44,7 +42,7 @@ func handleMessage(writer io.Writer, state analysis.State, method string, conten
 	case "initialize":
 		var req lsp.InitializeRequest
 		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Info.Printf("initialize error: %s", err)
+			logger.Error.Printf("initialize error: %s", err)
 			return
 		}
 
@@ -53,21 +51,17 @@ func handleMessage(writer io.Writer, state analysis.State, method string, conten
 	case "textDocument/didOpen":
 		var req lsp.DidOpenTextDocumentNotification
 		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Info.Printf("textDocument/didOpen error: %s", err)
+			logger.Error.Printf("textDocument/didOpen error: %s", err)
 			return
 		}
-
-		logger.Info.Printf("Opened: %s", req.Params.TextDocument.URI)
 
 		state.OpenDocument(req.Params.TextDocument.URI, req.Params.TextDocument.Text)
 	case "textDocument/didChange":
 		var req lsp.DidChangeTextDocumentNotification
 		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Info.Printf("textDocument/didChange error: %s", err)
+			logger.Error.Printf("textDocument/didChange error: %s", err)
 			return
 		}
-
-		logger.Info.Printf("Changed: %s", req.Params.TextDocument.URI)
 
 		for _, change := range req.Params.ContentChanges {
 			state.UpdateDocument(req.Params.TextDocument.URI, change.Text)
@@ -75,32 +69,30 @@ func handleMessage(writer io.Writer, state analysis.State, method string, conten
 	case "textDocument/hover":
 		var req lsp.HoverRequest
 		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Info.Printf("textDocument/hover error: %s", err)
+			logger.Error.Printf("textDocument/hover error: %s", err)
 			return
 		}
 
 		resp, err := state.Hover(req.ID, req.Params.TextDocument.URI, req.Params.Position)
 		if err != nil {
-			logger.Info.Printf("textDocument/hover error: %s", err)
+			logger.Error.Printf("textDocument/hover error: %s", err)
 			return
 		}
 
-		logger.Info.Printf("Hover, giving response")
 		writeResponse(writer, resp)
 	case "textDocument/completion":
 		var req lsp.CompletionRequest
 		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Info.Printf("textDocument/completion error: %s", err)
+			logger.Error.Printf("textDocument/completion error: %s", err)
 			return
 		}
 
 		resp, err := state.Completion(req.ID, req.Params.TextDocument.URI, req.Params.Position)
 		if err != nil {
-			logger.Info.Printf("textDocument/completion error: %s", err)
+			logger.Error.Printf("textDocument/completion error: %s", err)
 			return
 		}
 
-		logger.Info.Println("Completion, giving response")
 		writeResponse(writer, resp)
 	}
 }
