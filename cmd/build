@@ -1,24 +1,30 @@
 #!/bin/bash
 
+if [[ $(git status --porcelain) ]]; then
+    echo "❌ Cannot build until there are no uncommitted changes"
+    exit 1
+fi
+
 echo "🏗️ Starting build process..."
 
 # Linux (amd64)
 GOOS=linux GOARCH=amd64 go build -o bin/textwire_lsp_linux_amd64 main.go
-
 echo "✅ Linux build completed"
 
 # macOS (Intel)
 GOOS=darwin GOARCH=amd64 go build -o bin/textwire_lsp_darwin_amd64 main.go
-
 echo "✅ macOS Intel build completed"
 
 # macOS (Apple Silicon)
 GOOS=darwin GOARCH=arm64 go build -o bin/textwire_lsp_darwin_arm64 main.go
-
 echo "✅ macOS Apple Silicon build completed"
 
 # Windows (amd64)
 GOOS=windows GOARCH=amd64 go build -o bin/textwire_lsp_windows_amd64.exe main.go
-
 echo "✅ Windows build completed"
-echo "🏁 All builds completed successfully"
+
+build_version=$(git rev-parse --short HEAD)
+echo "$build_version" > bin/build-version
+echo "✅ Build ID generated"
+
+echo "🏁 DONE!"
