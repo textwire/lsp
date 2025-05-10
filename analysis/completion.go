@@ -8,8 +8,11 @@ import (
 )
 
 func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.CompletionResponse, error) {
-	// TODO: check if document exists
-	doc := s.Documents[uri]
+	doc, ok := s.Documents[uri]
+
+	if !ok {
+		return lsp.CompletionResponse{}, nil
+	}
 
 	lines := strings.Split(doc, "\n")
 	if int(pos.Line) >= len(lines) {
