@@ -12,9 +12,6 @@ import (
 type Config struct {
 	Enabled bool
 
-	// Level can be: error, warn, info, debug
-	Level string
-
 	// CustomPath for logs directory, not a file (optional)
 	CustomPath string
 }
@@ -29,11 +26,11 @@ var (
 func init() {
 	config = Config{
 		Enabled: true,
-		Level:   "info",
 	}
 
 	initLoggers()
 }
+
 func New(filename string) *log.Logger {
 	const fileMode = 0666
 
