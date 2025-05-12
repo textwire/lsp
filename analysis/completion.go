@@ -1,6 +1,7 @@
 package analysis
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/textwire/lsp/lsp"
@@ -23,28 +24,38 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 	cursorPos := int(pos.Character)
 	textBeforeCursor := line[:cursorPos]
 
-	if textBeforeCursor == "@" {
-		directives, err := completions.GetDirectives("en")
-		if err != nil {
-			return lsp.CompletionResponse{}, err
-		}
+	directiveRegex := regexp.MustCompile(`(^|[^\\])@(\w*)$`)
+	directiveMatch := directiveRegex.FindStringSubmatch(textBeforeCursor)
 
-		items := make([]lsp.CompletionItem, 0, len(directives))
-		for _, dir := range directives {
-			items = append(items, lsp.CompletionItem{
-				Label:         dir.Label,
-				InsertText:    dir.Insert,
-				Documentation: dir.Documentation,
-				LabelDetails: &lsp.CompletionItemLabelDetails{
-					Kind: lsp.CIKSnippet,
-				},
-			})
-		}
-
-		return s.completionResponse(id, items), nil
+	if directiveMatch == nil {
+		return s.completionResponse(id, []lsp.CompletionItem{}), nil
 	}
 
-	return s.completionResponse(id, []lsp.CompletionItem{}), nil
+	directiveName := directiveMatch[2]
+
+	directives, err := completions.GetDirectives("en")
+	if err != nil {
+		return lsp.CompletionResponse{}, err
+	}
+
+	items := make([]lsp.CompletionItem, 0, len(directives))
+
+	for _, dir := range directives {
+		if !strings.HasPrefix(dir.Insert, directiveName) {
+			continue
+		}
+
+		items = append(items, lsp.CompletionItem{
+			Label:         dir.Label,
+			InsertText:    dir.Insert,
+			Documentation: dir.Documentation,
+			LabelDetails: &lsp.CompletionItemLabelDetails{
+				Kind: lsp.CIKSnippet,
+			},
+		})
+	}
+
+	return s.completionResponse(id, items), nil
 }
 
 func (s *State) completionResponse(id int, items []lsp.CompletionItem) lsp.CompletionResponse {

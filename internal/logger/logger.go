@@ -30,6 +30,7 @@ func init() {
 
 	initLoggers()
 }
+
 func New(filename string) *log.Logger {
 	const fileMode = 0666
 

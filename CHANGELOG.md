@@ -1,5 +1,8 @@
 # Release Notes
 
+## v0.1.1 (2025-05-12)
+- Fixed issue with autocompletion not working properly in some cases
+
 ## v0.1.0 (2025-05-03)
 - Added `build.yml` file for GitHub actions to build releases with all LSP binaries
 
