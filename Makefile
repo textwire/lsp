@@ -11,4 +11,8 @@ push:
 	git push
 	@echo "✅ Pushed to GitHub!"
 
+.PHONE: build
+build:
+	go build main.go
+
 .DEFAULT_GOAL := test
