@@ -47,6 +47,7 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 
 		items = append(items, lsp.CompletionItem{
 			Label:         dir.Label,
+			FilterText:    dir.Insert,
 			InsertText:    dir.Insert,
 			Documentation: dir.Documentation,
 			LabelDetails: &lsp.CompletionItemLabelDetails{
