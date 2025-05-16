@@ -73,6 +73,11 @@ type CompletionItem struct {
 	// be an unqualified name of the completion item.
 	Label string `json:"label"`
 
+	// A string that should be used when filtering a set of
+	// completion items. When omitted the label is used as the
+	// filter text for this item.
+	FilterText string `json:"filterText,omitempty"`
+
 	// LabelDetails is additional details for the label.
 	LabelDetails *CompletionItemLabelDetails `json:"labelDetails,omitempty"`
 
