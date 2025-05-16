@@ -1,5 +1,8 @@
 # Release Notes
 
+## v0.1.3 (2025-05-16)
+- 🐛 Fixed proper autocomplete logic
+
 ## v0.1.2 (2025-05-15)
 - 🐛 Fixed bug with autocompletion not working properly on vscode editor
 

@@ -1,6 +1,7 @@
 package analysis
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/textwire/lsp/lsp"
@@ -17,6 +18,17 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 	lines := strings.Split(doc, "\n")
 	if int(pos.Line) >= len(lines) {
 		return s.completionResponse(id, nil), nil
+	}
+
+	line := lines[pos.Line]
+	cursorPos := int(pos.Character)
+	textBeforeCursor := line[:cursorPos]
+
+	directiveRegex := regexp.MustCompile(`(^|[^\\])@(\w*)$`)
+	directiveMatch := directiveRegex.FindStringSubmatch(textBeforeCursor)
+
+	if directiveMatch == nil {
+		return s.completionResponse(id, []lsp.CompletionItem{}), nil
 	}
 
 	directives, err := completions.GetDirectives("en")
