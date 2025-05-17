@@ -40,10 +40,13 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 
 	for _, dir := range directives {
 		items = append(items, lsp.CompletionItem{
-			Label:         dir.Label,
-			FilterText:    dir.Insert,
-			InsertText:    dir.Insert,
-			Documentation: dir.Documentation,
+			Label:      dir.Label,
+			FilterText: dir.Insert,
+			InsertText: dir.Insert,
+			Documentation: lsp.MarkupContent{
+				Kind:  "markdown",
+				Value: dir.Documentation,
+			},
 			LabelDetails: &lsp.CompletionItemLabelDetails{
 				Kind: lsp.CIKSnippet,
 			},

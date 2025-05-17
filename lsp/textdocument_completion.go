@@ -87,7 +87,16 @@ type CompletionItem struct {
 	InsertText string `json:"insertText,omitempty"`
 
 	// Documentation is a human-readable string that represents a doc-comment.
-	Documentation string `json:"documentation,omitempty"`
+	Documentation MarkupContent `json:"documentation,omitempty"`
+}
+
+type MarkupContent struct {
+	// Kind is the type of the Markup.
+	// Can have values `plaintext` and `markdown`
+	Kind string `json:"kind"`
+
+	// Value is the content itself
+	Value string `json:"value"`
 }
 
 type CompletionOptions struct {

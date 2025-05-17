@@ -1,5 +1,8 @@
 # Release Notes
 
+## v0.1.4 (2025-05-17)
+- ✨ Autocomplete suggestions show code example with syntax highlighting. Before, it was just displayed as text
+
 ## v0.1.3 (2025-05-16)
 - 🐛 Fixed proper autocomplete logic
 
@@ -19,4 +22,3 @@
 ## v0.0.1 (2025-04-16)
 - ✨ Added completions for directives
 - ✨ Added showing hover information for directives
-
