@@ -27,25 +27,31 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 	directiveRegex := regexp.MustCompile(`(^|[^\\])@(\w*)$`)
 	directiveMatch := directiveRegex.FindStringSubmatch(textBeforeCursor)
 
-	if directiveMatch == nil {
-		return s.completionResponse(id, []lsp.CompletionItem{}), nil
+	var completionItems []completions.Completion
+	var err error
+
+	if directiveMatch != nil {
+		completionItems, err = completions.GetDirectives("en")
 	}
 
-	directives, err := completions.GetDirectives("en")
 	if err != nil {
 		return lsp.CompletionResponse{}, err
 	}
 
-	items := make([]lsp.CompletionItem, 0, len(directives))
+	return s.completionResponse(id, s.makeCompletions(completionItems)), nil
+}
 
-	for _, dir := range directives {
+func (s *State) makeCompletions(completionItems []completions.Completion) []lsp.CompletionItem {
+	items := make([]lsp.CompletionItem, 0, len(completionItems))
+
+	for _, item := range completionItems {
 		items = append(items, lsp.CompletionItem{
-			Label:      dir.Label,
-			FilterText: dir.Insert,
-			InsertText: dir.Insert,
+			Label:      item.Label,
+			FilterText: item.Insert,
+			InsertText: item.Insert,
 			Documentation: lsp.MarkupContent{
 				Kind:  "markdown",
-				Value: dir.Documentation,
+				Value: item.Documentation,
 			},
 			LabelDetails: &lsp.CompletionItemLabelDetails{
 				Kind: lsp.CIKSnippet,
@@ -53,7 +59,7 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 		})
 	}
 
-	return s.completionResponse(id, items), nil
+	return items
 }
 
 func (s *State) completionResponse(id int, items []lsp.CompletionItem) lsp.CompletionResponse {
