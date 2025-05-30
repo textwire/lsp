@@ -1,5 +1,8 @@
 # Release Notes
 
+## v0.2.0 (2025-05-30)
+- ✨ Add autocompletion for loop object. Now if you type `loop.` inside of a loop, it will show available properties on the object
+
 ## v0.1.4 (2025-05-17)
 - ✨ Autocomplete suggestions show code example with syntax highlighting. Before, it was just displayed as text
 

@@ -10,3 +10,9 @@ github.com/textwire/textwire/v2 v2.5.4 h1:SXbPEUCRVC7O+9kD8BpMz81GV5zeYbyjTA6zyU
 github.com/textwire/textwire/v2 v2.5.4/go.mod h1:V0J75qH85DM8OAICWewhXyyXPXVAZYwhhiORGrWgj5I=
 github.com/textwire/textwire/v2 v2.5.6 h1:jrtI3ALSoC6u6Bf+7GI5yGSi3IHENgASG2GQTUyYgbk=
 github.com/textwire/textwire/v2 v2.5.6/go.mod h1:V0J75qH85DM8OAICWewhXyyXPXVAZYwhhiORGrWgj5I=
+github.com/textwire/textwire/v2 v2.5.7 h1:SVq50BpQTV805MbaMY4hb70Ss9QNWOEN0eXSHb+Xf8k=
+github.com/textwire/textwire/v2 v2.5.7/go.mod h1:V0J75qH85DM8OAICWewhXyyXPXVAZYwhhiORGrWgj5I=
+github.com/textwire/textwire/v2 v2.5.8 h1:PMPookvEf1eRlUHuTlhoZdOFrH5yviWu5hYTqBKEK2c=
+github.com/textwire/textwire/v2 v2.5.8/go.mod h1:V0J75qH85DM8OAICWewhXyyXPXVAZYwhhiORGrWgj5I=
+github.com/textwire/textwire/v2 v2.5.9 h1:ZK0v/neW2H5EPv5oPf1vmrPK+0JthrQSbs98V0nZyp4=
+github.com/textwire/textwire/v2 v2.5.9/go.mod h1:V0J75qH85DM8OAICWewhXyyXPXVAZYwhhiORGrWgj5I=
