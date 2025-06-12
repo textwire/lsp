@@ -40,9 +40,8 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 		doc = removeTrailingChar(doc, pos.Line, pos.Character, '.')
 
 		isInsideLoop, errors := twLsp.IsInLoop(doc, uri, pos.Line, pos.Character)
-		if errors != nil && len(errors) > 0 {
+		if len(errors) > 0 {
 			logger.Error.Println(errors[0])
-			return lsp.CompletionResponse{}, err
 		}
 
 		if isInsideLoop {

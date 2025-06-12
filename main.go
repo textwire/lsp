@@ -76,7 +76,6 @@ func handleMessage(writer io.Writer, state analysis.State, method string, conten
 		resp, err := state.Hover(req.ID, req.Params.TextDocument.URI, req.Params.Position)
 		if err != nil {
 			logger.Error.Printf("textDocument/hover error: %s", err)
-			return
 		}
 
 		writeResponse(writer, resp)
@@ -90,7 +89,6 @@ func handleMessage(writer io.Writer, state analysis.State, method string, conten
 		resp, err := state.Completion(req.ID, req.Params.TextDocument.URI, req.Params.Position)
 		if err != nil {
 			logger.Error.Printf("textDocument/completion error: %s", err)
-			return
 		}
 
 		writeResponse(writer, resp)
