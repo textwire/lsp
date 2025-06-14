@@ -1,7 +1,8 @@
 # Release Notes
 
-## v0.2.1 (2025-06-12)
+## v0.2.1 (2025-06-14)
 - 🐛 Update LSP textwire to the latest version which will fix crashing LSP when you make a syntax error in your Textwire code
+- ✨ Autocomplete snippets that appear after you hit enter are now more complex. Instead of simple autocomple like `@if` you know get the full if statement and the cursor placed inside condition. It allows you to hit tab to move to the next place in a snippet
 
 ## v0.2.0 (2025-05-30)
 - ✨ Add autocompletion for loop object. Now if you type `loop.` inside of a loop, it will show available properties on the object
