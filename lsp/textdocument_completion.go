@@ -88,6 +88,13 @@ type CompletionItem struct {
 
 	// Documentation is a human-readable string that represents a doc-comment.
 	Documentation MarkupContent `json:"documentation,omitempty"`
+
+	// InsertTextFormat defines whether the insert text in a completion
+	// item should be interpreted as plain text or a snippet.
+	// 1 stands for text format
+	// 2 stands for snippet where you can include `${3:foo}` and just `$1`
+	// special symbols to tell where to place the cursor
+	InsertTextFormat int `json:"insertTextFormat"`
 }
 
 type MarkupContent struct {
