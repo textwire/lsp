@@ -1,5 +1,8 @@
 # Release Notes
 
+## v0.3.1 (2025-06-14)
+- 🐛 Update LSP textwire to the latest version which will fix `@break($1)` snippet to `@break`
+
 ## v0.3.0 (2025-06-14)
 - 🐛 Update LSP textwire to the latest version which will fix crashing LSP when you make a syntax error in your Textwire code
 - ✨ Autocomplete snippets that appear after you hit enter are now more complex. Instead of simple autocomple like `@if` you know get the full if statement and the cursor placed inside condition. It allows you to hit tab to move to the next place in a snippet
