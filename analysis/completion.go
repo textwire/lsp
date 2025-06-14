@@ -77,9 +77,10 @@ func (s *State) makeCompletions(completionItems []completions.Completion) []lsp.
 
 	for _, item := range completionItems {
 		items = append(items, lsp.CompletionItem{
-			Label:      item.Label,
-			FilterText: item.Insert,
-			InsertText: item.Insert,
+			Label:            item.Label,
+			FilterText:       item.InsertText,
+			InsertText:       item.InsertText,
+			InsertTextFormat: item.InsertTextFormat,
 			Documentation: lsp.MarkupContent{
 				Kind:  "markdown",
 				Value: item.Documentation,
