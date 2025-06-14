@@ -40,9 +40,8 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 		doc = removeTrailingChar(doc, pos.Line, pos.Character, '.')
 
 		isInsideLoop, errors := twLsp.IsInLoop(doc, uri, pos.Line, pos.Character)
-		if errors != nil && len(errors) > 0 {
+		if len(errors) > 0 {
 			logger.Error.Println(errors[0])
-			return lsp.CompletionResponse{}, err
 		}
 
 		if isInsideLoop {
@@ -78,9 +77,10 @@ func (s *State) makeCompletions(completionItems []completions.Completion) []lsp.
 
 	for _, item := range completionItems {
 		items = append(items, lsp.CompletionItem{
-			Label:      item.Label,
-			FilterText: item.Insert,
-			InsertText: item.Insert,
+			Label:            item.Label,
+			FilterText:       item.InsertText,
+			InsertText:       item.InsertText,
+			InsertTextFormat: item.InsertTextFormat,
 			Documentation: lsp.MarkupContent{
 				Kind:  "markdown",
 				Value: item.Documentation,
