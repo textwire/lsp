@@ -1,0 +1,10 @@
+name: textwire-lsp
+
+services:
+    app:
+        image: textwire-lsp
+        container_name: textwire-lsp
+        build:
+            context: .
+        volumes:
+            - .:/app

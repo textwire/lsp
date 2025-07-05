@@ -1,0 +1,7 @@
+.github
+.git
+.gitignore
+.vscode
+LICENSE
+*.md
+/main
