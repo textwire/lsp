@@ -22,7 +22,7 @@ For Podman, run this:
 podman-compose build
 ```
 
-#### Run the container
+#### Run the Container
 After the image is build, you can run a container from that image. Run this command to create a container and enter this for Docker:
 ```bash
 docker compose run --rm app sh
