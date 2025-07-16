@@ -11,7 +11,7 @@ The Textwire LSP project is licensed under the [MIT License](LICENSE) and is fre
 ## Contribute
 ### With a Container Engine
 > [!NOTE]
-> If you use [🐳 Docker](https://app.docker.com/) instead of [🦦 Podman](https://podman.io/), just replace `podman-compose` with `docker compose`, and `podman` with `docker` in code examples below.
+> If you use [🐳 Docker](https://app.docker.com/) instead of [🦦 Podman](https://podman.io/), just replace `podman-compose` with `docker compose` in code examples below.
 
 #### Build the Image
 To build the image, run this command:
