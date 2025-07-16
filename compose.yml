@@ -6,5 +6,6 @@ services:
         container_name: textwire-lsp
         build:
             context: .
+            dockerfile: Containerfile
         volumes:
-            - .:/app
+            - .:/app:z
