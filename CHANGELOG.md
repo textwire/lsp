@@ -1,7 +1,8 @@
 # Release Notes
 
-## v0.4.0 (2025-11-07)
+## v0.4.0 (2025-11-08)
 - ✨ Loop directives like `@break`, `@continue`, `@breakIf`, `@continueIf` are now getting suggested only inside of loops.
+- 🧑‍💻 Added testing GitHub Actions job to run tests.
 
 ## v0.3.1 (2025-06-14)
 - 🐛 Updated LSP textwire to the latest version which will fix `@break($1)` snippet to `@break`
