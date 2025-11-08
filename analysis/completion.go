@@ -2,6 +2,7 @@ package analysis
 
 import (
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/textwire/lsp/internal/logger"
@@ -35,18 +36,9 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 	var err error
 
 	if directiveMatch != nil {
-		completionItems, err = completions.GetDirectives(locale)
+		completionItems, err = handleDirectivesAutocomplete(doc, pos, uri)
 	} else if strings.HasSuffix(textBeforeCursor, "loop.") {
-		doc = removeTrailingChar(doc, pos.Line, pos.Character, '.')
-
-		isInsideLoop, errors := twLsp.IsInLoop(doc, uri, pos.Line, pos.Character)
-		if len(errors) > 0 {
-			logger.Error.Println(errors[0])
-		}
-
-		if isInsideLoop {
-			completionItems, err = completions.GetLoopObjFields(locale)
-		}
+		completionItems, err = handleLoopObjectAutocomplete(doc, pos, uri)
 	}
 
 	if err != nil {
@@ -55,6 +47,55 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 	}
 
 	return s.completionResponse(id, s.makeCompletions(completionItems)), nil
+}
+
+func handleDirectivesAutocomplete(doc string, pos lsp.Position, uri string) ([]completions.Completion, error) {
+	dirs, err := completions.GetDirectives(locale)
+	if err != nil {
+		return []completions.Completion{}, err
+	}
+
+	isInsideLoop, errors := twLsp.IsInLoop(doc, uri, pos.Line, pos.Character)
+	if len(errors) > 0 {
+		logger.Error.Println(errors[0])
+	}
+
+	if isInsideLoop {
+		return dirs, nil
+	}
+
+	filteredDirs := make([]completions.Completion, 0, len(dirs))
+	loopDirs := []string{"@break", "@breakIf", "@continue", "@continueIf"}
+
+	for _, dir := range dirs {
+		if slices.Contains(loopDirs, dir.Label) {
+			continue
+		}
+
+		filteredDirs = append(filteredDirs, dir)
+	}
+
+	return filteredDirs, nil
+}
+
+func handleLoopObjectAutocomplete(doc string, pos lsp.Position, uri string) ([]completions.Completion, error) {
+	doc = removeTrailingChar(doc, pos.Line, pos.Character, '.')
+
+	isInsideLoop, errors := twLsp.IsInLoop(doc, uri, pos.Line, pos.Character)
+	if len(errors) > 0 {
+		logger.Error.Println(errors[0])
+	}
+
+	if !isInsideLoop {
+		return []completions.Completion{}, nil
+	}
+
+	fields, err := completions.GetLoopObjFields(locale)
+	if err != nil {
+		return []completions.Completion{}, err
+	}
+
+	return fields, nil
 }
 
 func removeTrailingChar(doc string, line, col uint, char byte) string {

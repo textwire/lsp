@@ -22,7 +22,7 @@ func TestDecodeMessage(t *testing.T) {
 	expectMethod := "hi"
 	incomingMsg := fmt.Sprintf("Content-Length: %d\r\n\r\n{\"Method\":\"%s\"}", expectLen, expectMethod)
 
-	method, content, err := DecodeMessage([]byte(incomingMsg) )
+	method, content, err := DecodeMessage([]byte(incomingMsg))
 	if err != nil {
 		t.Fatal(err)
 	}
