@@ -48,3 +48,6 @@ With Docker:
 ```bash
 docker compose down
 ```
+
+### Public a Version
+To publish a new version of LSP, you need to use tags. As soon as you push a new tech to GitHub, it will run a build that will create a release for this new version.
