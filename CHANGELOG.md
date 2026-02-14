@@ -2,8 +2,7 @@
 
 ## v0.4.1 (2026-02-14)
 
-- 🐛 Fixed bug with infinite loop that whould hung your editor when you had some syntax issues.
-- 🧑‍💻 Update Textwire to the latest version.
+- 🐛 Fixed bug with infinite loop that whould hung your editor when you had some syntax issues. Bug is fixed by updating Textwire to the latest version.
 
 ## v0.4.0 (2025-11-08)
 
