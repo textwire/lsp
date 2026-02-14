@@ -9,7 +9,12 @@ import (
 	"strconv"
 )
 
-const headerLabel = "Content-Length: "
+const (
+	// MaxContentLength sets the maximum size we can process for a single file.
+	// When file is larger, we stop the script to prevent infinite loop.
+	MaxContentLength = 50 * 1024 * 1024 // 50MB
+	headerLabel      = "Content-Length: "
+)
 
 var contentSeparator = []byte{'\r', '\n', '\r', '\n'}
 
@@ -51,7 +56,7 @@ func DecodeMessage(msg []byte) (string, []byte, error) {
 func Split(data []byte, _ bool) (advance int, token []byte, err error) {
 	header, content, found := bytes.Cut(data, contentSeparator)
 	if !found {
-		// not ready to execute a Split yet
+		// Not ready to execute a Split yet
 		return 0, nil, nil
 	}
 
@@ -59,8 +64,13 @@ func Split(data []byte, _ bool) (advance int, token []byte, err error) {
 	contentLenBytes := header[headerLabelLen:]
 	contentLen, err := strconv.Atoi(string(contentLenBytes))
 	if err != nil {
-		// returns err because doesn't know what do with the content
+		// Returns err because doesn't know what do with the content
 		return 0, nil, err
+	}
+
+	// The file is too large, break the script
+	if contentLen > MaxContentLength {
+		return 0, nil, fmt.Errorf("content length %d exceeds maximum %d", contentLen, MaxContentLength)
 	}
 
 	if len(content) < contentLen {

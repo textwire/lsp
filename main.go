@@ -20,6 +20,7 @@ func main() {
 	}()
 
 	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Buffer(make([]byte, 4096), rpc.MaxContentLength)
 	scanner.Split(rpc.Split)
 
 	state := analysis.NewState()
