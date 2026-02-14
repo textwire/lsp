@@ -1,5 +1,5 @@
 module github.com/textwire/lsp
 
-go 1.23.3
+go 1.25.0
 
-require github.com/textwire/textwire/v2 v2.6.7
+require github.com/textwire/textwire/v3 v3.0.2

@@ -2,9 +2,9 @@ package analysis
 
 import (
 	"github.com/textwire/lsp/lsp"
-	"github.com/textwire/textwire/v2/lexer"
-	twLsp "github.com/textwire/textwire/v2/lsp"
-	"github.com/textwire/textwire/v2/token"
+	"github.com/textwire/textwire/v3/lexer"
+	twLsp "github.com/textwire/textwire/v3/lsp"
+	"github.com/textwire/textwire/v3/token"
 )
 
 func (s *State) Hover(id int, uri string, pos lsp.Position) (lsp.HoverResponse, error) {

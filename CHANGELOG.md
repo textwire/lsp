@@ -1,5 +1,10 @@
 # Release Notes
 
+## v0.4.1 (2026-02-14)
+
+- 🐛 Fixed bug with infinite loop that whould hung your editor when you had some syntax issues.
+- 🧑‍💻 Update Textwire to the latest version.
+
 ## v0.4.0 (2025-11-08)
 
 - ✨ Loop directives like `@break`, `@continue`, `@breakIf`, `@continueIf` are now getting suggested only inside of loops.
