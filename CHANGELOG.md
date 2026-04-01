@@ -1,5 +1,9 @@
 # Release Notes
 
+## v0.5.0 (2026-04-01)
+
+- ✨ Update Textwire to the latest version.
+
 ## v0.4.2 (2026-03-01)
 
 - ✨ Update Textwire to the latest version.

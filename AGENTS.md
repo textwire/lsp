@@ -9,7 +9,7 @@ This is a Go-based LSP implementation for the Textwire templating language.
 
 - Language: Go 1.25.0
 - Module: `github.com/textwire/lsp`
-- Main dependency: `github.com/textwire/textwire/v3`
+- Main dependency: `github.com/textwire/textwire/v4`
 
 ## Architecture
 
