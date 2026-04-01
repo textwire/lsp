@@ -1,5 +1,9 @@
 # Release Notes
 
+## v0.5.1 (2026-04-01)
+
+- 🐛 Fixed autocompletions not always working.
+
 ## v0.5.0 (2026-04-01)
 
 - ✨ Update Textwire to the latest version.

@@ -42,7 +42,6 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 	}
 
 	if err != nil {
-		logger.Error.Println(err)
 		return lsp.CompletionResponse{}, err
 	}
 
@@ -65,7 +64,7 @@ func handleDirectivesAutocomplete(doc string, pos lsp.Position, uri string) ([]c
 	}
 
 	filteredDirs := make([]completions.Completion, 0, len(dirs))
-	loopDirs := []string{"@break", "@breakIf", "@continue", "@continueIf"}
+	loopDirs := []string{"@break", "@continue", "@continueif", "@breakif"}
 
 	for _, dir := range dirs {
 		if slices.Contains(loopDirs, dir.Label) {
