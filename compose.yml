@@ -6,4 +6,6 @@ services:
         container_name: textwire-lsp
         build: .
         volumes:
-            - .:/app:z
+            - .:/var/www/html:z
+        tty: true
+        stdin_open: true

@@ -1,10 +1,51 @@
 # Textwire LSP
 
+This is a Go-based LSP implementation for the Textwire templating language.
+
 ## Installation
 
 ```bash
-go get github.com/textwire/lsp
+go get codeberg.org/textwire/lsp
 ```
+
+## Project Overview
+
+- Language: Go 1.25.0
+- Module: `codeberg.org/textwire/lsp`
+- Main dependency: `codeberg.org/textwire/textwire/v5`
+
+## Architecture
+
+- **main.go**: Entry point, message routing via stdio
+- **lsp/**: LSP message types (initialize, hover, completion, document changes)
+- **analysis/**: Core logic (state management, hover, completion features)
+- **rpc/**: RPC encoding/decoding utilities
+- **internal/logger/**: Logging utilities
+
+## Development Commands
+
+All commands are in the Makefile:
+
+- `make test` - Run all tests
+- `make build` - Build the binary
+- `make check-fmt` - Verify Go code formatting
+
+## Code Standards
+
+- Follow standard Go conventions
+- Run `gofmt` on all files
+- All tests must pass
+- Maintain existing code style and patterns
+
+## LSP Capabilities
+
+Current LSP methods implemented:
+
+- `initialize` - Server initialization
+- `textDocument/didOpen` - Track opened documents
+- `textDocument/didChange` - Track document changes
+- `textDocument/hover` - Hover information
+- `textDocument/completion` - Autocomplete suggestions
 
 ## License
 
@@ -64,7 +105,7 @@ docker compose down
 
 ### Public a Version
 
-To publish a new version of LSP, you need to use tags. As soon as you push a new tech to GitHub, it will run a build that will create a release for this new version.
+To publish a new version of LSP, you need to use tags. As soon as you push a new tech to Codeberg, it will run a build that will create a release for this new version.
 
 ```bash
 git tag <version>

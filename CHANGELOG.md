@@ -19,7 +19,7 @@
 ## v0.4.0 (2025-11-08)
 
 - ✨ Loop directives like `@break`, `@continue`, `@breakIf`, `@continueIf` are now getting suggested only inside of loops.
-- 🧑‍💻 Added testing GitHub Actions job to run tests.
+- 🧑‍💻 Added testing actions job to run tests.
 
 ## v0.3.1 (2025-06-14)
 
@@ -52,7 +52,7 @@
 
 ## v0.1.0 (2025-05-03)
 
-- ✨ Added `build.yml` file for GitHub actions to build releases with all LSP binaries
+- ✨ Added `build.yml` file for actions to build releases with all LSP binaries
 
 ## v0.0.2 (2025-04-25)
 
