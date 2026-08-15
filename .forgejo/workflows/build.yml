@@ -28,4 +28,5 @@ jobs:
           args: release --clean
         env:
           GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+          GITHUB_TOKEN: ""
           GORELEASER_FORCE_TOKEN: gitia
