@@ -1,30 +1,30 @@
-name: Build and Release
+name: Build and release
 
 on:
   push:
     tags:
       - "*"
 
-permissions:
-    contents: write
-
 jobs:
-  goreleaser:
-    runs-on: ubuntu-latest
+  build-and-release:
+    runs-on: burn
+    name: Build and release
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: https://github.com/actions/setup-go@v5
         with:
-          go-version: stable
+          go-version: 1.25
+
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v6
+        uses: https://github.com/goreleaser/goreleaser-action@v7
         with:
           distribution: goreleaser
-          version: "~> v1"
+          version: "~> v2"
           args: release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}

@@ -7,20 +7,17 @@ on:
     branches: [master]
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-
+  test:
+    name: Test
+    runs-on: burn
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: https://github.com/actions/setup-go@v5
         with:
-          go-version: 1.23
+          go-version: 1.25
 
       - name: Check formatting
         run: make check-fmt
