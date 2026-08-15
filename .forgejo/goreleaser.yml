@@ -7,5 +7,5 @@ release:
     name: lsp
 
 gitea_urls:
-  api: https://gitea.myinstance.com/api/v1
+  api: https://codeberg.org/api/v1
   download: https://codeberg.org
