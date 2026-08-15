@@ -1,11 +1,11 @@
 name: textwire-lsp
 
 services:
-    app:
-        image: textwire-lsp
-        container_name: textwire-lsp
-        build: .
-        volumes:
-            - .:/var/www/html:z
-        tty: true
-        stdin_open: true
+  app:
+    image: textwire-lsp
+    container_name: textwire-lsp
+    build: .
+    volumes:
+      - .:/var/www/html:z
+    tty: true
+    stdin_open: true

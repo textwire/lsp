@@ -2,7 +2,7 @@ package analysis
 
 import (
 	"codeberg.org/textwire/lsp/lsp"
-	"codeberg.org/textwire/textwire/v4/pkg/lexer"
+	"codeberg.org/textwire/textwire/v5/pkg/lexer"
 	twLsp "codeberg.org/textwire/textwire/v5/pkg/lsp"
 	"codeberg.org/textwire/textwire/v5/pkg/token"
 )

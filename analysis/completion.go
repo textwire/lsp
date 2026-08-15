@@ -7,8 +7,8 @@ import (
 
 	"codeberg.org/textwire/lsp/internal/logger"
 	"codeberg.org/textwire/lsp/lsp"
-	twLsp "codeberg.org/textwire/textwire/v4/pkg/lsp"
-	"codeberg.org/textwire/textwire/v4/pkg/lsp/completions"
+	twLsp "codeberg.org/textwire/textwire/v5/pkg/lsp"
+	"codeberg.org/textwire/textwire/v5/pkg/lsp/completions"
 )
 
 const locale = "en"
