@@ -1,9 +1,11 @@
 version: 2
 force_token: gitea
+
+release:
+  gitia:
+    owner: textwire
+    name: lsp
+
 gitea_urls:
   api: https://gitea.myinstance.com/api/v1
   download: https://codeberg.org
-
-gitia:
-  owner: textwire
-  name: lsp
