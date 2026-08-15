@@ -1,16 +1,21 @@
 # Release Notes
 
+## v0.5.2 (2026-08-15)
+
+- 🧑‍💻 Moved from GitHub to Codeberg.
+- ✨ Updated Textwire to the latest version.
+
 ## v0.5.1 (2026-04-01)
 
 - 🐛 Fixed autocompletions not always working.
 
 ## v0.5.0 (2026-04-01)
 
-- ✨ Update Textwire to the latest version.
+- ✨ Updated Textwire to the latest version.
 
 ## v0.4.2 (2026-03-01)
 
-- ✨ Update Textwire to the latest version.
+- ✨ Updated Textwire to the latest version.
 
 ## v0.4.1 (2026-02-14)
 
