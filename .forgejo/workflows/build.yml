@@ -7,8 +7,10 @@ on:
 
 jobs:
   build-and-release:
-    runs-on: burn
+    runs-on: podman
+    container: docker.io/library/node:26
     name: Build and release
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
