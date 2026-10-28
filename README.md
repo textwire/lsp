@@ -5,14 +5,14 @@ This is a Go-based LSP implementation for the Textwire templating language.
 ## Installation
 
 ```bash
-go get codeberg.org/textwire/lsp
+go get github.com/textwire/lsp
 ```
 
 ## Project Overview
 
 - Language: Go 1.25.0
-- Module: `codeberg.org/textwire/lsp`
-- Main dependency: `codeberg.org/textwire/textwire/v5`
+- Module: `github.com/textwire/lsp`
+- Main dependency: `github.com/textwire/textwire/v5`
 
 ## Architecture
 
@@ -105,7 +105,7 @@ docker compose down
 
 ### Public a Version
 
-To publish a new version of LSP, you need to use tags. As soon as you push a new tech to Codeberg, it will run a build that will create a release for this new version.
+To publish a new version of LSP, you need to use tags. As soon as you push a new tech to GitHub, it will run a build that will create a release for this new version.
 
 ```bash
 git tag <version>

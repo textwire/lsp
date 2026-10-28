@@ -6,10 +6,10 @@ import (
 	"io"
 	"os"
 
-	"codeberg.org/textwire/lsp/analysis"
-	"codeberg.org/textwire/lsp/internal/logger"
-	"codeberg.org/textwire/lsp/lsp"
-	"codeberg.org/textwire/lsp/rpc"
+	"github.com/textwire/lsp/analysis"
+	"github.com/textwire/lsp/internal/logger"
+	"github.com/textwire/lsp/lsp"
+	"github.com/textwire/lsp/rpc"
 )
 
 func main() {

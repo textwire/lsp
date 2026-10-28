@@ -1,7 +1,7 @@
-module codeberg.org/textwire/lsp
+module github.com/textwire/lsp
 
 go 1.25.0
 
-require codeberg.org/textwire/textwire/v5 v5.1.0
+require github.com/textwire/textwire/v5 v5.1.16
 
-//replace codeberg.org/textwire/textwire/v5 => /home/serhii/www/open/textwire/textwire
+//replace github.com/textwire/textwire/v5 => /home/serhii/www/open/textwire/textwire

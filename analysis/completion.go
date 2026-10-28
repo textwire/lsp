@@ -5,10 +5,10 @@ import (
 	"slices"
 	"strings"
 
-	"codeberg.org/textwire/lsp/internal/logger"
-	"codeberg.org/textwire/lsp/lsp"
-	twLsp "codeberg.org/textwire/textwire/v5/pkg/lsp"
-	"codeberg.org/textwire/textwire/v5/pkg/lsp/completions"
+	"github.com/textwire/lsp/internal/logger"
+	"github.com/textwire/lsp/lsp"
+	twLsp "github.com/textwire/textwire/v5/pkg/lsp"
+	"github.com/textwire/textwire/v5/pkg/lsp/completions"
 )
 
 const locale = "en"
