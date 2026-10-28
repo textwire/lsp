@@ -3,7 +3,7 @@
 ## v0.5.2 (2026-08-15)
 
 - 🧑‍💻 Moved from GitHub to Codeberg.
-- ✨ Updated Textwire to the latest version.
+- ✨ Updated Textwire to v5.1.16.
 
 ## v0.5.1 (2026-04-01)
 
