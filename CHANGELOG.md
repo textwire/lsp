@@ -2,6 +2,7 @@
 
 ## v0.6.1 (2026-11-26)
 
+- 🐛 Added request timeout for hover and completion so a large/slow document can't block the server.
 - 🐛 Fixed completion panic when cursor position is out of line bounds.
 - 🐛 Fixed fatal error on JSON Marshal when encoding message. Now, it just logs the error and serves empty string if error occurred.
 - 🐛 Fixed potential logger panic when creating a new instance of a logger.

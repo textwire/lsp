@@ -42,7 +42,7 @@ type ServerInfo struct {
 func NewInitializeResponse(id int) InitializeResponse {
 	return InitializeResponse{
 		Response: Response{
-			RPC: "2.0",
+			RPC: JSONRPCVersion,
 			ID:  &id,
 		},
 		Result: InitializeResult{
