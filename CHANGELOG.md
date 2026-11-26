@@ -17,7 +17,7 @@
 
 ## v0.5.1 (2026-04-01)
 
-- 🐛 Fixed autocompletions not always working.
+- 🐛 Fixed auto completions not always working.
 
 ## v0.5.0 (2026-04-01)
 
@@ -29,7 +29,7 @@
 
 ## v0.4.1 (2026-02-14)
 
-- 🐛 Fixed bug with infinite loop that whould hung your editor when you had some syntax issues. Bug is fixed by updating Textwire to the latest version.
+- 🐛 Fixed bug with infinite loop that would hung your editor when you had some syntax issues. Bug is fixed by updating Textwire to the latest version.
 
 ## v0.4.0 (2025-11-08)
 
@@ -43,7 +43,7 @@
 ## v0.3.0 (2025-06-14)
 
 - 🐛 Updated LSP textwire to the latest version which will fix crashing LSP when you make a syntax error in your Textwire code
-- ✨ Autocomplete snippets that appear after you hit enter are now more complex. Instead of simple autocomple like `@if` you know get the full if statement and the cursor placed inside condition. It allows you to hit tab to move to the next place in a snippet
+- ✨ Autocomplete snippets that appear after you hit enter are now more complex. Instead of simple autocomplete like `@if` you know get the full if statement and the cursor placed inside condition. It allows you to hit tab to move to the next place in a snippet
 
 ## v0.2.0 (2025-05-30)
 
