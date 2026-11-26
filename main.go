@@ -102,5 +102,9 @@ func handleMessage(writer io.Writer, state analysis.State, method string, conten
 
 func writeResponse(writer io.Writer, msg any) {
 	reply := rpc.EncodeMessage(msg)
-	writer.Write([]byte(reply))
+	_, err := writer.Write([]byte(reply))
+
+	if err != nil {
+		logger.Error.Printf("writeResponse error: %s", err)
+	}
 }

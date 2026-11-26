@@ -34,7 +34,7 @@ func EncodeMessage(msg any) string {
 func DecodeMessage(msg []byte) (string, []byte, error) {
 	header, content, found := bytes.Cut(msg, contentSeparator)
 	if !found {
-		return "", nil, errors.New("Did not find a separator")
+		return "", nil, errors.New("did not find a separator")
 	}
 
 	headerLabelLen := len(headerLabel)

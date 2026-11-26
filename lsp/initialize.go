@@ -7,7 +7,6 @@ type InitializeRequest struct {
 
 type InitializeRequestParams struct {
 	ClientInfo *ClientInfo `json:"clientInfo"`
-	// TODO: There is a lot to go here
 }
 
 type ClientInfo struct {
