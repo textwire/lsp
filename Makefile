@@ -24,6 +24,12 @@ fmt: build-image
 	@$(RUN) go fmt ./...
 	@echo "✅ Code formatted!"
 
+.PHONY: build
+build: build-image
+	@$(RUN) go build main.go
+	@echo "✅ main executable is ready"
+	@ls -hlaF main
+
 .PHONY: line
 line: build-image
 	@$(RUN) golines -w -m $(MAX_LINE_LENGTH) .
