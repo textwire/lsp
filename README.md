@@ -1,5 +1,7 @@
 # Textwire LSP
 
+[![Test](https://github.com/textwire/lsp/actions/workflows/test.yml/badge.svg)](https://github.com/textwire/lsp/actions/workflows/test.yml)
+
 This is a Go-based LSP implementation for the Textwire templating language.
 
 ## Installation
