@@ -26,8 +26,5 @@ jobs:
 
       - uses: webgtx/setup-podman-compose@v1
 
-      - name: Build image
-        run: make build-image
-
       - name: Run checks
         run: make check

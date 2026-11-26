@@ -7,7 +7,7 @@ STAMP := .github/.checks-image
 
 # Builds the checks image only when the Dockerfile or compose file changes
 $(STAMP): Dockerfile compose.yml
-	@$(OCI) build-image checks
+	@$(OCI) build checks
 	@touch $(STAMP)
 
 .PHONY: build-image
