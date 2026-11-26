@@ -1,6 +1,8 @@
 # Textwire LSP
 
 [![Tests and Checks](https://github.com/textwire/lsp/actions/workflows/test.yml/badge.svg)](https://github.com/textwire/lsp/actions/workflows/test.yml)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/textwire/lsp)
+![GitHub License](https://img.shields.io/github/license/textwire/lsp)
 
 This is a Go-based LSP implementation for the Textwire templating language.
 
