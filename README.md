@@ -59,7 +59,8 @@ All commands run inside a container. The image is built automatically the first 
 make test
 ```
 
-- `make build` - Build the checks container image
+- `make build-image` - Build the checks container image
+- `make build` - Builds a `main` binary in the root of the project
 - `make test` - Run all tests
 - `make fmt` - Format Go code
 - `make lint` - Run linter

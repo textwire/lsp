@@ -7,35 +7,35 @@ STAMP := .github/.checks-image
 
 # Builds the checks image only when the Dockerfile or compose file changes
 $(STAMP): Dockerfile compose.yml
-	@$(OCI) build checks
+	@$(OCI) build-image checks
 	@touch $(STAMP)
 
-.PHONY: build
-build: $(STAMP)
+.PHONY: build-image
+build-image: $(STAMP)
 
 .PHONY: test
-test: build
+test: build-image
 	@clear || true
 	@$(RUN) go test $(RACE) -count=1 -timeout 30s ./...
 	@echo "✅ All tests passed!"
 
 .PHONY: fmt
-fmt: build
+fmt: build-image
 	@$(RUN) go fmt ./...
 	@echo "✅ Code formatted!"
 
 .PHONY: line
-line: build
+line: build-image
 	@$(RUN) golines -w -m $(MAX_LINE_LENGTH) .
 	@echo "✅ Lines limited!"
 
 .PHONY: lint
-lint: build
+lint: build-image
 	@$(RUN) golangci-lint run
 	@echo "✅ Linting passed!"
 
 .PHONY: todo
-todo: build
+todo: build-image
 	@if $(RUN) grep -I --exclude="Makefile" --exclude-dir=".git" -r TODO .; then \
 		echo "❌ Found TODOs" >&2; \
 		exit 1; \
