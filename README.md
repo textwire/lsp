@@ -47,10 +47,6 @@ Current LSP methods implemented:
 - `textDocument/hover` - Hover information
 - `textDocument/completion` - Autocomplete suggestions
 
-## License
-
-The Textwire LSP project is licensed under the [MIT License](LICENSE) and is free to use, modify, and distribute.
-
 ### Available Commands
 
 All commands run inside a container. The image is built automatically the first time you run any command:
@@ -85,3 +81,6 @@ git tag <version>
 git push --tags
 ```
 
+## License
+
+The Textwire LSP project is licensed under the [MIT License](LICENSE) and is free to use, modify, and distribute.
