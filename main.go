@@ -122,7 +122,12 @@ func didChangeResponse(state *analysis.State, content []byte) {
 	}
 }
 
-func hoverResponse(writer io.Writer, state *analysis.State, reqTimeout time.Duration, content []byte) {
+func hoverResponse(
+	writer io.Writer,
+	state *analysis.State,
+	reqTimeout time.Duration,
+	content []byte,
+) {
 	var req lsp.HoverRequest
 	if err := json.Unmarshal(content, &req); err != nil {
 		logger.Error.Printf("textDocument/hover error: %s", err)
@@ -141,7 +146,12 @@ func hoverResponse(writer io.Writer, state *analysis.State, reqTimeout time.Dura
 	writeResponse(writer, resp)
 }
 
-func completionResponse(writer io.Writer, state *analysis.State, reqTimeout time.Duration, content []byte) {
+func completionResponse(
+	writer io.Writer,
+	state *analysis.State,
+	reqTimeout time.Duration,
+	content []byte,
+) {
 	var req lsp.CompletionRequest
 	if err := json.Unmarshal(content, &req); err != nil {
 		logger.Error.Printf("textDocument/completion error: %s", err)
