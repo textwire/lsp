@@ -1,12 +1,110 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"testing"
 	"time"
 
+	"github.com/textwire/lsp/analysis"
 	"github.com/textwire/lsp/lsp"
+	"github.com/textwire/lsp/rpc"
 )
+
+func handleMessageResponse(
+	t *testing.T,
+	content []byte,
+	method string,
+	state *analysis.State,
+	wantID int,
+) json.RawMessage {
+	t.Helper()
+
+	var out bytes.Buffer
+	handleMessage(&out, state, time.Second, method, content)
+
+	_, responseContent, err := rpc.DecodeMessage(out.Bytes())
+	if err != nil {
+		t.Fatalf("decode response message: %v", err)
+	}
+
+	var response struct {
+		lsp.Response
+		Result json.RawMessage `json:"result"`
+	}
+
+	if err := json.Unmarshal(responseContent, &response); err != nil {
+		t.Fatalf("unmarshal response: %v", err)
+	}
+
+	if response.RPC != lsp.JSONRPCVersion {
+		t.Errorf("expected jsonrpc %q, got %q", lsp.JSONRPCVersion, response.RPC)
+	}
+
+	if response.ID == nil || *response.ID != wantID {
+		t.Errorf("expected response id %d, got %v", wantID, response.ID)
+	}
+
+	if len(response.Result) == 0 {
+		t.Error("expected response result")
+	}
+
+	return response.Result
+}
+
+func TestHandleMessage_InitializeResponse(t *testing.T) {
+	content := []byte(`{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}`)
+	response := handleMessageResponse(t, content, "initialize", analysis.NewState(), 1)
+
+	var result lsp.InitializeResult
+	if err := json.Unmarshal(response, &result); err != nil {
+		t.Fatalf("unmarshal initialize result: %v", err)
+	}
+
+	if result.Capabilities.TextDocumentSync != 1 {
+		t.Errorf("expected textDocumentSync 1, got %d", result.Capabilities.TextDocumentSync)
+	}
+
+	if !result.Capabilities.HoverProvider {
+		t.Error("expected hover provider to be enabled")
+	}
+}
+
+func TestHandleMessage_HoverResponse(t *testing.T) {
+	content := []byte(
+		`{"jsonrpc":"2.0","id":2,"method":"textDocument/hover","params":{"textDocument":{"uri":"file:///missing.tw"},"position":{"line":0,"character":0}}}`,
+	)
+	response := handleMessageResponse(t, content, "textDocument/hover", analysis.NewState(), 2)
+
+	var result lsp.HoverResult
+	if err := json.Unmarshal(response, &result); err != nil {
+		t.Fatalf("unmarshal hover result: %v", err)
+	}
+
+	if result.Contents != "" {
+		t.Errorf("expected empty hover contents, got %q", result.Contents)
+	}
+}
+
+func TestHandleMessage_CompletionResponse(t *testing.T) {
+	state := analysis.NewState()
+	state.SetDocument("file:///document.tw", "plain text")
+	content := []byte(
+		`{"jsonrpc":"2.0","id":3,"method":"textDocument/completion","params":{"textDocument":{"uri":"file:///document.tw"},"position":{"line":0,"character":1}}}`,
+	)
+
+	response := handleMessageResponse(t, content, "textDocument/completion", state, 3)
+
+	var result []lsp.CompletionItem
+	if err := json.Unmarshal(response, &result); err != nil {
+		t.Fatalf("unmarshal completion result: %v", err)
+	}
+
+	if len(result) != 0 {
+		t.Errorf("expected no completion items, got %d", len(result))
+	}
+}
 
 func TestHandleWithTimeout_ReturnsResponse(t *testing.T) {
 	want := "ok"
