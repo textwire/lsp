@@ -81,12 +81,12 @@ func handleMessage(
 		didOpenResponse(state, content)
 	case "textDocument/didChange":
 		didChangeResponse(state, content)
+	case "textDocument/didClose":
+		didCloseResponse(state, content)
 	case "textDocument/hover":
 		hoverResponse(writer, state, reqTimeout, content)
 	case "textDocument/completion":
 		completionResponse(writer, state, reqTimeout, content)
-	case "textDocument/didClose":
-		didCloseResponse(state, content)
 	}
 }
 
@@ -120,6 +120,16 @@ func didChangeResponse(state *analysis.State, content []byte) {
 	for _, change := range req.Params.ContentChanges {
 		state.UpdateDocument(req.Params.TextDocument.URI, change.Text)
 	}
+}
+
+func didCloseResponse(state *analysis.State, content []byte) {
+	var req lsp.DidCloseTextDocumentNotification
+	if err := json.Unmarshal(content, &req); err != nil {
+		logger.Error.Printf("textDocument/didClose error: %s", err)
+		return
+	}
+
+	state.CloseDocument(req.Params.TextDocument.URI)
 }
 
 func hoverResponse(
@@ -168,16 +178,6 @@ func completionResponse(
 	})
 
 	writeResponse(writer, resp)
-}
-
-func didCloseResponse(state *analysis.State, content []byte) {
-	var req lsp.DidCloseTextDocumentNotification
-	if err := json.Unmarshal(content, &req); err != nil {
-		logger.Error.Printf("textDocument/didClose error: %s", err)
-		return
-	}
-
-	state.CloseDocument(req.Params.TextDocument.URI)
 }
 
 func writeResponse(writer io.Writer, msg any) {
