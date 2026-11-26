@@ -27,6 +27,12 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 
 	line := lines[pos.Line]
 	cursorPos := int(pos.Character)
+
+	// Check if out-of-bound for the line string
+	if cursorPos < 0 || cursorPos > len(line) {
+		return lsp.CompletionResponse{}, nil
+	}
+
 	textBeforeCursor := line[:cursorPos]
 
 	directiveRegex := regexp.MustCompile(`(^|[^\\])@(\w*)$`)

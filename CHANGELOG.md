@@ -1,5 +1,9 @@
 # Release Notes
 
+## v0.6.1 (2026-11-26)
+
+- 🐛 Fixed completion panic when cursor position is out of line bounds.
+
 ## v0.6.0 (2026-11-26)
 
 - ✨ Updated Textwire to v6.0.6.
