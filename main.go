@@ -36,6 +36,10 @@ func main() {
 
 		handleMessage(writer, state, method, content)
 	}
+
+	if err := scanner.Err(); err != nil {
+		logger.Error.Printf("scanner error: %s", err)
+	}
 }
 
 func handleMessage(writer io.Writer, state analysis.State, method string, content []byte) {
