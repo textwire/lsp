@@ -55,6 +55,17 @@ func handleMessageResponse(
 	return response.Result
 }
 
+func handleMessageNotification(t *testing.T, content []byte, method string, state *analysis.State) {
+	t.Helper()
+
+	var out bytes.Buffer
+	handleMessage(&out, state, time.Second, method, content)
+
+	if out.Len() != 0 {
+		t.Errorf("expected no response for %s notification, got %q", method, out.String())
+	}
+}
+
 func TestHandleMessage_InitializeResponse(t *testing.T) {
 	content := []byte(`{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}`)
 	response := handleMessageResponse(t, content, "initialize", analysis.NewState(), 1)
@@ -157,6 +168,57 @@ func TestHandleMessage_CompletionResponseWithItems(t *testing.T) {
 	}
 
 	t.Error("expected completion items to include @if")
+}
+
+func TestHandleMessage_DidOpen(t *testing.T) {
+	state := analysis.NewState()
+	content := []byte(
+		`{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///document.tw","languageId":"textwire","version":1,"text":"opened"}}}`,
+	)
+
+	handleMessageNotification(t, content, "textDocument/didOpen", state)
+
+	got, ok := state.Document("file:///document.tw")
+	if !ok {
+		t.Fatal("expected opened document to be stored")
+	}
+
+	if got != "opened" {
+		t.Errorf("expected document text %q, got %q", "opened", got)
+	}
+}
+
+func TestHandleMessage_DidChange(t *testing.T) {
+	state := analysis.NewState()
+	state.SetDocument("file:///document.tw", "before")
+	content := []byte(
+		`{"jsonrpc":"2.0","method":"textDocument/didChange","params":{"textDocument":{"uri":"file:///document.tw","version":2},"contentChanges":[{"text":"after"}]}}`,
+	)
+
+	handleMessageNotification(t, content, "textDocument/didChange", state)
+
+	got, ok := state.Document("file:///document.tw")
+	if !ok {
+		t.Fatal("expected changed document to remain stored")
+	}
+
+	if got != "after" {
+		t.Errorf("expected document text %q, got %q", "after", got)
+	}
+}
+
+func TestHandleMessage_DidClose(t *testing.T) {
+	state := analysis.NewState()
+	state.SetDocument("file:///document.tw", "opened")
+	content := []byte(
+		`{"jsonrpc":"2.0","method":"textDocument/didClose","params":{"textDocument":{"uri":"file:///document.tw"}}}`,
+	)
+
+	handleMessageNotification(t, content, "textDocument/didClose", state)
+
+	if _, ok := state.Document("file:///document.tw"); ok {
+		t.Error("expected closed document to be removed")
+	}
 }
 
 func TestHandleWithTimeout_ReturnsResponse(t *testing.T) {
