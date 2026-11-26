@@ -48,7 +48,11 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 	return s.completionResponse(id, s.makeCompletions(completionItems)), nil
 }
 
-func handleDirectivesAutocomplete(doc string, pos lsp.Position, uri string) ([]completions.Completion, error) {
+func handleDirectivesAutocomplete(
+	doc string,
+	pos lsp.Position,
+	uri string,
+) ([]completions.Completion, error) {
 	dirs, err := completions.GetDirectives(locale)
 	if err != nil {
 		return []completions.Completion{}, err
@@ -77,7 +81,11 @@ func handleDirectivesAutocomplete(doc string, pos lsp.Position, uri string) ([]c
 	return filteredDirs, nil
 }
 
-func handleLoopObjectAutocomplete(doc string, pos lsp.Position, uri string) ([]completions.Completion, error) {
+func handleLoopObjectAutocomplete(
+	doc string,
+	pos lsp.Position,
+	uri string,
+) ([]completions.Completion, error) {
 	doc = removeTrailingChar(doc, pos.Line, pos.Character, '.')
 
 	isInsideLoop, errors := twLsp.IsInLoop(doc, uri, pos.Line, pos.Character)

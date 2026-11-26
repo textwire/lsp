@@ -70,7 +70,11 @@ func Split(data []byte, _ bool) (advance int, token []byte, err error) {
 
 	// The file is too large, break the script
 	if contentLen > MaxContentLength {
-		return 0, nil, fmt.Errorf("content length %d exceeds maximum %d", contentLen, MaxContentLength)
+		return 0, nil, fmt.Errorf(
+			"content length %d exceeds maximum %d",
+			contentLen,
+			MaxContentLength,
+		)
 	}
 
 	if len(content) < contentLen {

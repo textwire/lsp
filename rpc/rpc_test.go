@@ -20,7 +20,11 @@ func TestEncodeMessage(t *testing.T) {
 func TestDecodeMessage(t *testing.T) {
 	expectLen := 15
 	expectMethod := "hi"
-	incomingMsg := fmt.Sprintf("Content-Length: %d\r\n\r\n{\"Method\":\"%s\"}", expectLen, expectMethod)
+	incomingMsg := fmt.Sprintf(
+		"Content-Length: %d\r\n\r\n{\"Method\":\"%s\"}",
+		expectLen,
+		expectMethod,
+	)
 
 	method, content, err := DecodeMessage([]byte(incomingMsg))
 	if err != nil {
