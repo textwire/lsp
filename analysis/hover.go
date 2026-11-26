@@ -8,8 +8,10 @@ import (
 )
 
 func (s *State) Hover(id int, uri string, pos lsp.Position) (lsp.HoverResponse, error) {
-	// TODO: check if document exists
-	doc := s.Documents[uri]
+	doc, ok := s.Documents[uri]
+	if !ok {
+		return s.hoverResponse(id, ""), nil
+	}
 
 	l := lexer.New(doc)
 
