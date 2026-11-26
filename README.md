@@ -12,7 +12,7 @@ go get github.com/textwire/lsp
 
 - Language: Go 1.25.0
 - Module: `github.com/textwire/lsp`
-- Main dependency: `github.com/textwire/textwire/v5`
+- Main dependency: `github.com/textwire/textwire/v6`
 
 ## Architecture
 

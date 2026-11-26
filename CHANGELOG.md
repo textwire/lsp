@@ -1,5 +1,9 @@
 # Release Notes
 
+## v0.6.0 (2026-11-26)
+
+- ✨ Updated Textwire to v6.0.6.
+
 ## v0.5.2 (2026-08-15)
 
 - 🧑‍💻 Moved from GitHub to Codeberg.

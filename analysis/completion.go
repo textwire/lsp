@@ -7,8 +7,8 @@ import (
 
 	"github.com/textwire/lsp/internal/logger"
 	"github.com/textwire/lsp/lsp"
-	twLsp "github.com/textwire/textwire/v5/pkg/lsp"
-	"github.com/textwire/textwire/v5/pkg/lsp/completions"
+	twLsp "github.com/textwire/textwire/v6/pkg/lsp"
+	"github.com/textwire/textwire/v6/pkg/lsp/completions"
 )
 
 const locale = "en"
