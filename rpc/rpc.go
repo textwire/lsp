@@ -5,8 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"strconv"
+
+	"github.com/textwire/lsp/internal/logger"
 )
 
 const (
@@ -25,7 +26,8 @@ type BaseMessage struct {
 func EncodeMessage(msg any) string {
 	content, err := json.Marshal(msg)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error.Println(err)
+		return ""
 	}
 
 	return fmt.Sprintf("Content-Length: %d\r\n\r\n%s", len(content), content)

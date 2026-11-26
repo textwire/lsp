@@ -36,7 +36,8 @@ func New(filename string) *log.Logger {
 
 	logfile, err := os.OpenFile(filename, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, fileMode)
 	if err != nil {
-		log.Panicf("The filepath %s is missing a file", filename)
+		Error.Printf("The filepath %s is missing a file", filename)
+		return log.New(io.Discard, "", 0)
 	}
 
 	return log.New(logfile, "[textwire lsp]", log.Ldate|log.Ltime|log.Lshortfile)

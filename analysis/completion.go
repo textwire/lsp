@@ -14,7 +14,7 @@ import (
 const locale = "en"
 
 func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.CompletionResponse, error) {
-	doc, ok := s.Documents[uri]
+	doc, ok := s.Document(uri)
 
 	if !ok {
 		return lsp.CompletionResponse{}, nil
@@ -27,6 +27,12 @@ func (s *State) Completion(id int, uri string, pos lsp.Position) (lsp.Completion
 
 	line := lines[pos.Line]
 	cursorPos := int(pos.Character)
+
+	// Check if out-of-bound for the line string
+	if cursorPos < 0 || cursorPos > len(line) {
+		return lsp.CompletionResponse{}, nil
+	}
+
 	textBeforeCursor := line[:cursorPos]
 
 	directiveRegex := regexp.MustCompile(`(^|[^\\])@(\w*)$`)
@@ -145,7 +151,7 @@ func (s *State) makeCompletions(completionItems []completions.Completion) []lsp.
 func (s *State) completionResponse(id int, items []lsp.CompletionItem) lsp.CompletionResponse {
 	return lsp.CompletionResponse{
 		Response: lsp.Response{
-			RPC: "2.0",
+			RPC: lsp.JSONRPCVersion,
 			ID:  &id,
 		},
 		Result: items,

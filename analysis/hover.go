@@ -8,7 +8,7 @@ import (
 )
 
 func (s *State) Hover(id int, uri string, pos lsp.Position) (lsp.HoverResponse, error) {
-	doc, ok := s.Documents[uri]
+	doc, ok := s.Document(uri)
 	if !ok {
 		return s.hoverResponse(id, ""), nil
 	}
@@ -44,7 +44,7 @@ func (s *State) Hover(id int, uri string, pos lsp.Position) (lsp.HoverResponse, 
 func (s *State) hoverResponse(id int, contents string) lsp.HoverResponse {
 	return lsp.HoverResponse{
 		Response: lsp.Response{
-			RPC: "2.0",
+			RPC: lsp.JSONRPCVersion,
 			ID:  &id,
 		},
 		Result: lsp.HoverResult{Contents: contents},
