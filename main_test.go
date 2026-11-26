@@ -10,6 +10,8 @@ import (
 	"github.com/textwire/lsp/analysis"
 	"github.com/textwire/lsp/lsp"
 	"github.com/textwire/lsp/rpc"
+	textwireLsp "github.com/textwire/textwire/v6/pkg/lsp"
+	"github.com/textwire/textwire/v6/pkg/token"
 )
 
 func handleMessageResponse(
@@ -87,6 +89,30 @@ func TestHandleMessage_HoverResponse(t *testing.T) {
 	}
 }
 
+func TestHandleMessage_HoverResponseWithContents(t *testing.T) {
+	state := analysis.NewState()
+	state.SetDocument("file:///document.tw", "@if true")
+	content := []byte(
+		`{"jsonrpc":"2.0","id":4,"method":"textDocument/hover","params":{"textDocument":{"uri":"file:///document.tw"},"position":{"line":0,"character":1}}}`,
+	)
+
+	response := handleMessageResponse(t, content, "textDocument/hover", state, 4)
+
+	var result lsp.HoverResult
+	if err := json.Unmarshal(response, &result); err != nil {
+		t.Fatalf("unmarshal hover result: %v", err)
+	}
+
+	want, err := textwireLsp.GetTokenMeta(token.IF, "en")
+	if err != nil {
+		t.Fatalf("get @if metadata: %v", err)
+	}
+
+	if result.Contents != want {
+		t.Errorf("unexpected hover contents:\n got: %q\nwant: %q", result.Contents, want)
+	}
+}
+
 func TestHandleMessage_CompletionResponse(t *testing.T) {
 	state := analysis.NewState()
 	state.SetDocument("file:///document.tw", "plain text")
@@ -104,6 +130,33 @@ func TestHandleMessage_CompletionResponse(t *testing.T) {
 	if len(result) != 0 {
 		t.Errorf("expected no completion items, got %d", len(result))
 	}
+}
+
+func TestHandleMessage_CompletionResponseWithItems(t *testing.T) {
+	state := analysis.NewState()
+	state.SetDocument("file:///document.tw", "@")
+	content := []byte(
+		`{"jsonrpc":"2.0","id":5,"method":"textDocument/completion","params":{"textDocument":{"uri":"file:///document.tw"},"position":{"line":0,"character":1}}}`,
+	)
+
+	response := handleMessageResponse(t, content, "textDocument/completion", state, 5)
+
+	var result []lsp.CompletionItem
+	if err := json.Unmarshal(response, &result); err != nil {
+		t.Fatalf("unmarshal completion result: %v", err)
+	}
+
+	if len(result) == 0 {
+		t.Fatal("expected completion items after @")
+	}
+
+	for _, item := range result {
+		if item.Label == "@if" {
+			return
+		}
+	}
+
+	t.Error("expected completion items to include @if")
 }
 
 func TestHandleWithTimeout_ReturnsResponse(t *testing.T) {
