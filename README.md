@@ -57,32 +57,19 @@ The Textwire LSP project is licensed under the [MIT License](LICENSE) and is fre
 
 #### Build the Image
 
-With Podman:
+> [!Note]
+> If you use docker instead of podman, juse replace `podman-compose` with `docker compose` in the commands below.
 
 ```bash
 podman-compose build
-```
-
-With Docker:
-
-```bash
-docker compose build
 ```
 
 #### Run the Container
 
 After the image is build, you can run a container from that image. Run this command to create a container:
 
-With Podman:
-
 ```bash
 podman-compose run --rm app sh
-```
-
-With Docker:
-
-```bash
-docker compose run --rm app sh
 ```
 
 Inside of the container, you will be able to run commands like `make test` and `make build`.
@@ -91,16 +78,8 @@ Inside of the container, you will be able to run commands like `make test` and `
 
 When you are done working on a project, you can remove the container to cleanup after yourself:
 
-With Podman:
-
 ```bash
 podman-compose down
-```
-
-With Docker:
-
-```bash
-docker compose down
 ```
 
 ### Public a Version
