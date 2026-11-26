@@ -76,75 +76,98 @@ func handleMessage(
 ) {
 	switch method {
 	case "initialize":
-		var req lsp.InitializeRequest
-		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Error.Printf("initialize error: %s", err)
-			return
-		}
-
-		msg := lsp.NewInitializeResponse(req.ID)
-		writeResponse(writer, msg)
+		initializeResponse(writer, content)
 	case "textDocument/didOpen":
-		var req lsp.DidOpenTextDocumentNotification
-		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Error.Printf("textDocument/didOpen error: %s", err)
-			return
-		}
-
-		state.SetDocument(req.Params.TextDocument.URI, req.Params.TextDocument.Text)
+		didOpenResponse(state, content)
 	case "textDocument/didChange":
-		var req lsp.DidChangeTextDocumentNotification
-		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Error.Printf("textDocument/didChange error: %s", err)
-			return
-		}
-
-		for _, change := range req.Params.ContentChanges {
-			state.UpdateDocument(req.Params.TextDocument.URI, change.Text)
-		}
+		didChangeResponse(state, content)
 	case "textDocument/hover":
-		var req lsp.HoverRequest
-		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Error.Printf("textDocument/hover error: %s", err)
-			return
-		}
-
-		resp := handleWithTimeout(req.ID, reqTimeout, func(_ context.Context) any {
-			resp, err := state.Hover(req.ID, req.Params.TextDocument.URI, req.Params.Position)
-			if err != nil {
-				logger.Error.Printf("textDocument/hover error: %s", err)
-			}
-
-			return resp
-		})
-
-		writeResponse(writer, resp)
+		hoverResponse(writer, state, reqTimeout, content)
 	case "textDocument/completion":
-		var req lsp.CompletionRequest
-		if err := json.Unmarshal(content, &req); err != nil {
-			logger.Error.Printf("textDocument/completion error: %s", err)
-			return
-		}
-
-		resp := handleWithTimeout(req.ID, reqTimeout, func(_ context.Context) any {
-			resp, err := state.Completion(req.ID, req.Params.TextDocument.URI, req.Params.Position)
-			if err != nil {
-				logger.Error.Printf("textDocument/completion error: %s", err)
-			}
-
-			return resp
-		})
-
-		writeResponse(writer, resp)
+		completionResponse(writer, state, reqTimeout, content)
 	case "textDocument/didClose":
-		var notification lsp.DidCloseTextDocumentNotification
-		if err := json.Unmarshal(content, &notification); err != nil {
-			logger.Error.Printf("textDocument/didClose error: %s", err)
-			return
+		didCloseResponse(state, content)
+	}
+}
+
+func initializeResponse(writer io.Writer, content []byte) {
+	var req lsp.InitializeRequest
+	if err := json.Unmarshal(content, &req); err != nil {
+		logger.Error.Printf("initialize error: %s", err)
+		return
+	}
+
+	writeResponse(writer, lsp.NewInitializeResponse(req.ID))
+}
+
+func didOpenResponse(state *analysis.State, content []byte) {
+	var req lsp.DidOpenTextDocumentNotification
+	if err := json.Unmarshal(content, &req); err != nil {
+		logger.Error.Printf("textDocument/didOpen error: %s", err)
+		return
+	}
+
+	state.SetDocument(req.Params.TextDocument.URI, req.Params.TextDocument.Text)
+}
+
+func didChangeResponse(state *analysis.State, content []byte) {
+	var req lsp.DidChangeTextDocumentNotification
+	if err := json.Unmarshal(content, &req); err != nil {
+		logger.Error.Printf("textDocument/didChange error: %s", err)
+		return
+	}
+
+	for _, change := range req.Params.ContentChanges {
+		state.UpdateDocument(req.Params.TextDocument.URI, change.Text)
+	}
+}
+
+func hoverResponse(writer io.Writer, state *analysis.State, reqTimeout time.Duration, content []byte) {
+	var req lsp.HoverRequest
+	if err := json.Unmarshal(content, &req); err != nil {
+		logger.Error.Printf("textDocument/hover error: %s", err)
+		return
+	}
+
+	resp := handleWithTimeout(req.ID, reqTimeout, func(_ context.Context) any {
+		resp, err := state.Hover(req.ID, req.Params.TextDocument.URI, req.Params.Position)
+		if err != nil {
+			logger.Error.Printf("textDocument/hover error: %s", err)
 		}
 
-		state.CloseDocument(notification.Params.TextDocument.URI)
+		return resp
+	})
+
+	writeResponse(writer, resp)
+}
+
+func completionResponse(writer io.Writer, state *analysis.State, reqTimeout time.Duration, content []byte) {
+	var req lsp.CompletionRequest
+	if err := json.Unmarshal(content, &req); err != nil {
+		logger.Error.Printf("textDocument/completion error: %s", err)
+		return
 	}
+
+	resp := handleWithTimeout(req.ID, reqTimeout, func(_ context.Context) any {
+		resp, err := state.Completion(req.ID, req.Params.TextDocument.URI, req.Params.Position)
+		if err != nil {
+			logger.Error.Printf("textDocument/completion error: %s", err)
+		}
+
+		return resp
+	})
+
+	writeResponse(writer, resp)
+}
+
+func didCloseResponse(state *analysis.State, content []byte) {
+	var req lsp.DidCloseTextDocumentNotification
+	if err := json.Unmarshal(content, &req); err != nil {
+		logger.Error.Printf("textDocument/didClose error: %s", err)
+		return
+	}
+
+	state.CloseDocument(req.Params.TextDocument.URI)
 }
 
 func writeResponse(writer io.Writer, msg any) {
