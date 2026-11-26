@@ -51,33 +51,25 @@ Current LSP methods implemented:
 
 The Textwire LSP project is licensed under the [MIT License](LICENSE) and is free to use, modify, and distribute.
 
-## OCI
+### Available Commands
 
-### Build the Image
-
-> [!Note]
-> If you use docker instead of podman, juse replace `podman-compose` with `docker compose` in the commands below.
+All commands run inside a container. The image is built automatically the first time you run any command:
 
 ```bash
-podman-compose build
+make test
 ```
 
-### Run the Container
+- `make build` - Build the checks container image
+- `make test` - Run all tests
+- `make fmt` - Format Go code
+- `make lint` - Run linter
+- `make check` - Combines commands like: test, fmt, lint
+- `make` - Defaults to `make check`
 
-After the image is build, you can run a container from that image. Run this command to create a container:
-
-```bash
-podman-compose run --rm app sh
-```
-
-Inside of the container, you will be able to run commands like `make test` and `make build`.
-
-### Remove the Container
-
-When you are done working on a project, you can remove the container to cleanup after yourself:
+Commands use `podman-compose` by default. To use Docker Compose instead, override `OCI`:
 
 ```bash
-podman-compose down
+make check OCI='docker compose'
 ```
 
 ## New Tag Release
