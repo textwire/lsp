@@ -51,11 +51,9 @@ Current LSP methods implemented:
 
 The Textwire LSP project is licensed under the [MIT License](LICENSE) and is free to use, modify, and distribute.
 
-## Contribute
+## OCI
 
-### With a Container Engine
-
-#### Build the Image
+### Build the Image
 
 > [!Note]
 > If you use docker instead of podman, juse replace `podman-compose` with `docker compose` in the commands below.
@@ -64,7 +62,7 @@ The Textwire LSP project is licensed under the [MIT License](LICENSE) and is fre
 podman-compose build
 ```
 
-#### Run the Container
+### Run the Container
 
 After the image is build, you can run a container from that image. Run this command to create a container:
 
@@ -74,7 +72,7 @@ podman-compose run --rm app sh
 
 Inside of the container, you will be able to run commands like `make test` and `make build`.
 
-#### Remove the Container
+### Remove the Container
 
 When you are done working on a project, you can remove the container to cleanup after yourself:
 
@@ -82,7 +80,7 @@ When you are done working on a project, you can remove the container to cleanup 
 podman-compose down
 ```
 
-### Public a Version
+## New Tag Release
 
 To publish a new version of LSP, you need to use tags. As soon as you push a new tech to GitHub, it will run a build that will create a release for this new version.
 
